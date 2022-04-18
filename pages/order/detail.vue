@@ -57,7 +57,7 @@
 
     <!-- 物流信息 -->
     <view
-      v-if="order.delivery_type == DeliveryTypeEnum.EXPRESS.value && order.delivery_status == DeliveryStatusEnum.DELIVERED.value"
+      v-if="order.delivery_type == DeliveryTypeEnum.EXPRESS.value && order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.express"
       class="express i-card" @click="handleTargetExpress()">
       <view class="main">
         <view class="info-item">

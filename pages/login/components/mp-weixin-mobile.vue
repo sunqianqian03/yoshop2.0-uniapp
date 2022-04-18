@@ -49,7 +49,9 @@
       // getphonenumber事件的回调方法
       async handelMpWeixinMobileLogin({ detail }) {
         const app = this
-        if (detail.errMsg !== 'getPhoneNumber:ok') {
+        if (detail.errMsg != 'getPhoneNumber:ok') {
+          console.log('微信授权获取手机号失败', detail.errMsg)
+          // app.$error(detail.errMsg)
           return
         }
         app.isLoading = true
