@@ -108,8 +108,7 @@
             </view>
           </button>
           <!-- #endif -->
-          <!-- 购物车 (非微信小程序端显示) -->
-          <!-- #ifndef MP-WEIXIN -->
+          <!-- 购物车 -->
           <view class="fast-item fast-item--cart" @click="onTargetCart">
             <view v-if="cartTotal > 0" class="fast-badge fast-badge--fixed">{{ cartTotal > 99 ? '99+' : cartTotal }}
             </view>
@@ -120,7 +119,6 @@
               <text>购物车</text>
             </view>
           </view>
-          <!-- #endif -->
         </view>
         <!-- 操作按钮 -->
         <view class="foo-item-btn">

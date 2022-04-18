@@ -139,28 +139,23 @@
 // 快捷菜单
 .foo-item-fast {
   box-sizing: border-box;
-  width: 256rpx;
+  min-width: 214rpx;
   line-height: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-evenly;
+  margin-right: 12rpx;
 
   .fast-item {
     position: relative;
-    padding: 4rpx 10rpx;
+    padding: 4rpx 0;
     line-height: 1;
-    // text-align: center;
+    text-align: center;
+    width: 84rpx;
 
-    .fast-icon {
-      margin-bottom: 6rpx;
-    }
-
-    &--home {
-      margin-right: 30rpx;
-    }
-    
     &--cart {
-      .fast-icon { padding-left: 3px; }
+      margin-left: 6rpx;
+      .fast-icon { margin-left: -12rpx; }
     }
     
     // 角标
@@ -179,6 +174,7 @@
       border: 1px solid #fff;
       border-radius: 999px;
     }
+
     .fast-badge--fixed {
       position: absolute;
       top: 0;
@@ -187,11 +183,12 @@
     }
 
     .fast-icon {
-      font-size: 46rpx;
+      font-size: 44rpx;
+      margin-bottom: 8rpx;
     }
 
     .fast-text {
-      font-size: 24rpx;
+      font-size: 22rpx;
     }
   }
 }
