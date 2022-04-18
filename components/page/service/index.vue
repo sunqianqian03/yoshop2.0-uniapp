@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  const rpx = uni.getSystemInfoSync().windowWidth / 750
+  import { rpx2px } from '@/utils/util'
 
   export default {
 
@@ -44,10 +44,10 @@
     },
     computed: {
       right() {
-        return 2 * this.itemStyle.right * rpx
+        return rpx2px(2 * this.itemStyle.right)
       },
       bottom() {
-        return 2 * this.itemStyle.bottom * rpx
+        return rpx2px(2 * this.itemStyle.bottom)
       }
     },
 
