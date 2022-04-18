@@ -134,7 +134,7 @@
           background: #fff;
 
           .goods-name {
-            height: 70rpx;
+            min-height: 68rpx;
             line-height: 1.3;
             white-space: normal;
             color: #484848;
@@ -214,7 +214,7 @@
 
           .goods-name {
             margin-top: 20rpx;
-            height: 70rpx;
+            min-height: 68rpx;
             line-height: 1.3;
             white-space: normal;
             color: #484848;
