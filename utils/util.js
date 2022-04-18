@@ -1,9 +1,4 @@
 /**
- * 工具类
- */
-
-
-/**
  * 格式化日期格式 (用于兼容ios Date对象)
  */
 export const formatDate = (time) => {
@@ -121,7 +116,7 @@ export const isEmpty = (value) => {
  * @param {*} obj 源对象
  */
 export const cloneObj = (obj) => {
-  let newObj = obj.constructor === Array ? [] : {};
+  let newObj = isArray(obj) ? [] : {};
   if (typeof obj !== 'object') {
     return;
   }
@@ -155,7 +150,7 @@ export function throttle(fn, delay = 100) {
 // 重新设定定时器， 依次反复， 当我们停止下来时，
 // 没有执行清除定时器， 超过一定时间后触发回调函数。
 // 参考文档：https://segmentfault.com/q/1010000021145192
-export function debounce(fn, delay) {
+export function debounce(fn, delay = 100) {
   let timer
   return function() {
     const that = this
@@ -169,7 +164,6 @@ export function debounce(fn, delay) {
   }
 }
 
-
 /**
  * 数组交集
  * @param {Array} 数组1
@@ -178,4 +172,31 @@ export function debounce(fn, delay) {
  */
 export const arrayIntersect = (array1, array2) => {
   return array1.filter(val => array2.indexOf(val) > -1)
+}
+
+/**
+ * 获取当前客户端的rpx比值
+ * @return {Number}
+ */
+export const rpx = () => {
+  const { windowWidth } = uni.getSystemInfoSync()
+  // #ifdef H5
+  // 与pages.json文件中的 rpxCalcMaxDeviceWidth参数对应, 请勿修改
+  const rpxCalcMaxDeviceWidth = 750
+  // 与pages.json文件中的 rpxCalcBaseDeviceWidth参数对应, 请勿修改
+  const rpxCalcBaseDeviceWidth = 560
+  const calcWindowWidth = windowWidth > rpxCalcMaxDeviceWidth ? rpxCalcBaseDeviceWidth : windowWidth
+  return calcWindowWidth / 750
+  // #endif
+  // #ifndef H5
+  return windowWidth / 750
+  // #endif
+}
+
+/**
+ * 获取当前客户端的rpx比值
+ * @return {Number}
+ */
+export const rpx2px = (num) => {
+  return num * rpx()
 }
