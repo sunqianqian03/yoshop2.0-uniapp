@@ -53,9 +53,9 @@
     text-align: center;
 
     .tips {
-      font-size: 26rpx;
+      font-size: 28rpx;
       color: gray;
-      margin: 40rpx 0;
+      margin: 50rpx 0;
     }
 
     .empty-icon .image {

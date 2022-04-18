@@ -268,7 +268,10 @@
       onClearCart() {
         const app = this
         CartApi.clear(app.checkedIds)
-          .then(result => app.getCartList())
+          .then(result => {
+            app.getCartList()
+            app.handleToggleMode()
+          })
       }
 
     }
@@ -406,7 +409,7 @@
   .empty-ipt {
     width: 220rpx;
     margin: 0 auto;
-    font-size: 28rpx;
+    font-size: 32rpx;
     height: 64rpx;
     line-height: 64rpx;
     text-align: center;
