@@ -1,11 +1,9 @@
 <template>
-  <view class="diy-banner" :style="{ height: `${imgHeights[imgCurrent]}rpx` }">
+  <view class="diy-banner" :style="{ height: `${imgHeights[imgCurrent]}px` }">
     <!-- 图片轮播 -->
-    <swiper :autoplay="autoplay" class="swiper-box" :duration="duration" :circular="true" :interval="itemStyle.interval * 1000"
-      @change="_bindChange">
+    <swiper class="swiper-box" :autoplay="autoplay" :duration="duration" :circular="true" :interval="itemStyle.interval * 1000" @change="_bindChange">
       <swiper-item v-for="(dataItem, index) in dataList" :key="index">
-        <image mode="widthFix" class="slide-image" :src="dataItem.imgUrl" @click="onLink(dataItem.link)"
-          @load="_imagesHeight" />
+        <image mode="widthFix" class="slide-image" :src="dataItem.imgUrl" @click="onLink(dataItem.link)" @load="_imagesHeight" />
       </swiper-item>
     </swiper>
     <!-- 指示点 -->
@@ -17,10 +15,10 @@
 </template>
 
 <script>
-  import mixin from '../mixin'
+  import mixin from '../mixin';
 
   export default {
-    name: "Banner",
+    name: 'Banner',
 
     /**
      * 组件的属性列表
@@ -41,12 +39,22 @@
      */
     data() {
       return {
+        windowWidth: 750,
         indicatorDots: false, // 是否显示面板指示点
         autoplay: true, // 是否自动切换
         duration: 800, // 滑动动画时长
         imgHeights: [], // 图片的高度
-        imgCurrent: 0, // 当前banne所在滑块指针
-      }
+        imgCurrent: 0 // 当前banne所在滑块指针
+      };
+    },
+
+    created() {
+      const app = this;
+      uni.getSystemInfo({
+        success({ windowWidth }) {
+          app.windowWidth = windowWidth > 750 ? 750 : windowWidth;
+        }
+      });
     },
 
     /**
@@ -54,34 +62,29 @@
      * 更新属性和数据的方法与更新页面数据的方法类似
      */
     methods: {
-
       /**
        * 计算图片高度
        */
-      _imagesHeight(e) {
+      _imagesHeight({ detail }) {
+        const app = this;
         // 获取图片真实宽度
-        const imgwidth = e.detail.width,
-          imgheight = e.detail.height,
-          // 宽高比
-          ratio = imgwidth / imgheight
+        const { width, height } = detail;
+        // 宽高比
+        const ratio = width / height;
         // 计算的高度值
-        const viewHeight = 750 / ratio,
-          imgHeights = this.imgHeights;
+        const viewHeight = app.windowWidth / ratio;
         // 把每一张图片的高度记录到数组里
-        imgHeights.push(viewHeight);
-        this.imgHeights = imgHeights
+        app.imgHeights.push(viewHeight);
       },
 
       /**
        * 记录当前指针
        */
       _bindChange(e) {
-        this.imgCurrent = e.detail.current
+        this.imgCurrent = e.detail.current;
       }
-
     }
-
-  }
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -99,7 +102,6 @@
         display: block;
       }
     }
-
 
     /* 指示点 */
     .indicator-dots {
@@ -147,8 +149,6 @@
         width: 22rpx;
         height: 14rpx;
       }
-
     }
-
   }
 </style>
