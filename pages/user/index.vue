@@ -1,9 +1,8 @@
 <template>
   <view v-if="!isFirstload" class="container">
     <!-- 页面头部 -->
-    <view class="main-header"
-      :style="{ height: $platform == 'H5' ? '240rpx' : '320rpx', paddingTop: $platform == 'H5' ? '0' : '50rpx' }">
-      <image class="bg-image" src="/static/background/user-header.png" mode="scaleToFill"></image>
+    <view class="main-header" :style="{ height: $platform == 'H5' ? '240rpx' : '280rpx', paddingTop: $platform == 'H5' ? '0' : '80rpx' }">
+      <image class="bg-image" src="/static/background/user-header2.png" mode="scaleToFill"></image>
       <!-- 用户信息 -->
       <view v-if="isLogin" class="user-info">
         <view class="user-avatar">
@@ -430,14 +429,14 @@
         color: #c59a46;
 
         .nick-name {
-          font-size: 32rpx;
+          font-size: 34rpx;
           font-weight: bold;
           max-width: 270rpx;
         }
 
         .mobile {
           margin-top: 15rpx;
-          font-size: 26rpx;
+          font-size: 28rpx;
         }
 
         .user-grade {
@@ -457,7 +456,7 @@
 
           .user-grade_name {
             margin-left: 5rpx;
-            font-size: 24rpx;
+            font-size: 26rpx;
             color: #EEE0C3;
           }
 
@@ -465,7 +464,7 @@
 
         .login-tips {
           margin-top: 12rpx;
-          font-size: 28rpx;
+          font-size: 30rpx;
         }
 
       }
@@ -486,7 +485,7 @@
     justify-content: center;
     align-items: center;
     padding: 1rpx;
-    font-size: 22rpx;
+    font-size: 24rpx;
   }
 
   // 我的钱包
@@ -505,15 +504,12 @@
       color: #545454;
 
       .item-icon {
-        font-size: 40rpx;
+        font-size: 44rpx;
       }
 
       .item-name {
-        margin-top: 10rpx;
-      }
-
-      .item-name text {
-        font-size: 25rpx;
+        margin-top: 14rpx;
+        font-size: 28rpx;
       }
 
     }
@@ -524,7 +520,7 @@
       padding: 0 42rpx;
 
       .item-value {
-        font-size: 32rpx;
+        font-size: 34rpx;
         color: red;
       }
 
@@ -533,7 +529,8 @@
       }
 
       .item-name {
-        font-size: 25rpx;
+        margin-top: 14rpx;
+        font-size: 28rpx;
       }
     }
 
@@ -559,11 +556,11 @@
         margin: 0 auto;
         padding: 10rpx 0;
         color: #545454;
-        font-size: 40rpx;
+        font-size: 44rpx;
       }
 
       .item-name {
-        font-size: 26rpx;
+        font-size: 28rpx;
         color: #545454;
         text-align: center;
         margin-right: 10rpx;
@@ -575,21 +572,22 @@
   // 我的服务
   .my-service {
     margin: 22rpx auto 22rpx auto;
-    padding: 20rpx 0;
+    padding: 22rpx 0;
     width: 94%;
     box-shadow: 0 1rpx 5rpx 0px rgba(0, 0, 0, 0.05);
     border-radius: 5rpx;
     background: #fff;
 
     .service-title {
-      padding-left: 20rpx;
-      margin-bottom: 30rpx;
-      font-size: 28rpx;
+      padding-left: 24rpx;
+      margin-bottom: 20rpx;
+      font-size: 30rpx;
     }
 
     .service-content {
 
-      // margin-bottom: -30rpx;
+      margin-bottom: -20rpx;
+
       .service-item {
         position: relative;
         width: 25%;
@@ -599,13 +597,13 @@
         .item-icon {
           text-align: center;
           margin: 0 auto;
-          padding: 10rpx 0;
+          padding: 14rpx 0;
           color: #ff3800;
-          font-size: 40rpx;
+          font-size: 44rpx;
         }
 
         .item-name {
-          font-size: 26rpx;
+          font-size: 28rpx;
           color: #545454;
           text-align: center;
           margin-right: 10rpx;
@@ -622,13 +620,13 @@
     margin-top: 50rpx;
 
     .logout-btn {
-      width: 50%;
+      width: 60%;
       margin: 0 auto;
-      font-size: 26rpx;
+      font-size: 28rpx;
       color: #616161;
       border-radius: 20rpx;
       border: 1px solid #dcdcdc;
-      padding: 14rpx 0;
+      padding: 16rpx 0;
       text-align: center;
     }
   }
