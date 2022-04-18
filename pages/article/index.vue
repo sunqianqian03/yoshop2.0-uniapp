@@ -2,19 +2,9 @@
   <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ use: false }" :up="upOption"
     @up="upCallback">
 
-    <!-- 分类列表tab -->
-    <view class="tabs-wrapper">
-      <scroll-view class="scroll-view" scroll-x>
-        <view class="tab-item" :class="{ active: curId ==  0 }" @click="onSwitchTab(0)">
-          <view class="value"><text>全部</text></view>
-        </view>
-        <!-- 分类列表 -->
-        <view class="tab-item" :class="{ active: curId ==  item.category_id }" @click="onSwitchTab(item.category_id)"
-          v-for="(item, index) in categoryList" :key="index">
-          <view class="value"><text>{{ item.name }}</text></view>
-        </view>
-      </scroll-view>
-    </view>
+    <!-- tab栏 -->
+    <u-tabs :list="tabList" :is-scroll="true" :current="curTab" active-color="#fd4a5f" :duration="0.2"
+      @change="onChangeTab" />
 
     <!-- 文章列表 -->
     <view class="article-list">
@@ -67,12 +57,12 @@
     mixins: [MescrollMixin],
     data() {
       return {
-        // 分类列表
-        categoryList: [],
+        // 选项卡列表
+        tabList: [],
+        // 当前选项
+        curTab: 0,
         // 文章列表
         articleList: getEmptyPaginateObj(),
-        // 当前选中的分类id (0则代表首页)
-        curId: 0,
         // 上拉加载配置
         upOption: {
           // 首次自动执行
@@ -90,11 +80,8 @@
      */
     onLoad(options) {
       const app = this
-      if (options.categoryId) {
-        app.curId = options.categoryId
-      }
       // 获取文章分类数据
-      app.getCategoryList()
+      app.getCategoryList(options.categoryId)
     },
 
     methods: {
@@ -117,12 +104,23 @@
       },
 
       // 获取文章分类数据
-      getCategoryList() {
+      getCategoryList(categoryId) {
+        CategoryApi.list().then(result => {
+          this.setTabList(result.data.list, categoryId)
+        })
+      },
+
+      // 设置选项卡数据
+      setTabList(categoryList, categoryId) {
         const app = this
-        CategoryApi.list()
-          .then(result => {
-            app.categoryList = result.data.list
-          })
+        app.tabList = [{ value: 0, name: '全部' }]
+        categoryList.forEach(item => {
+          app.tabList.push({ value: item.category_id, name: item.name })
+        })
+        if (categoryId > 0) {
+          const findIndex = app.tabList.findIndex(item => item.value == categoryId)
+          app.curTab = findIndex > -1 ? findIndex : 0
+        }
       },
 
       /**
@@ -132,25 +130,35 @@
       getArticleList(pageNo = 1) {
         const app = this
         return new Promise((resolve, reject) => {
-          ArticleApi.list({ categoryId: app.curId, page: pageNo }, { load: false })
+          ArticleApi.list({ categoryId: app.getTabValue(), page: pageNo }, { load: false })
             .then(result => {
               // 合并新数据
               const newList = result.data.list
               app.articleList.data = getMoreListData(newList, app.articleList, pageNo)
               resolve(newList)
             })
-            .catch(result => reject())
+            .catch(reject)
         })
       },
 
-      // 切换选择的分类
-      onSwitchTab(categoryId = 0) {
+      // 切换标签项
+      onChangeTab(index) {
+        // 设置当前选中的标签
+        this.curTab = index
+        // 刷新订单列表
+        this.onRefreshList()
+      },
+
+      // 获取当前标签项的值
+      getTabValue() {
         const app = this
-        // 切换当前的分类ID
-        app.curId = categoryId
-        // 刷新列表数据
-        app.articleList = getEmptyPaginateObj()
-        app.mescroll.resetUpScroll()
+        return app.tabList.length ? app.tabList[app.curTab].value : 0
+      },
+
+      // 刷新列表数据
+      onRefreshList() {
+        this.articleList = getEmptyPaginateObj()
+        setTimeout(() => this.mescroll.resetUpScroll(), 120)
       },
 
       // 跳转文章详情页
@@ -186,51 +194,11 @@
 </script>
 
 <style lang="scss" scoped>
-  /* 顶部选项卡 */
-
   .container {
     min-height: 100vh;
   }
 
-  .tabs-wrapper {
-    position: sticky;
-    top: var(--window-top);
-
-    display: flex;
-    width: 100%;
-    height: 88rpx;
-    color: #333;
-    font-size: 28rpx;
-    background: #fff;
-    border-bottom: 1rpx solid #e4e4e4;
-    z-index: 100;
-    overflow: hidden;
-    white-space: nowrap;
-
-  }
-
-  .tab-item {
-    display: inline-block;
-    padding: 0 15rpx;
-    text-align: center;
-    min-width: 20%;
-    height: 87rpx;
-    line-height: 88rpx;
-    box-sizing: border-box;
-
-    .value {
-      height: 100%;
-    }
-
-    &.active .value {
-      color: #fd4a5f;
-      border-bottom: 4rpx solid #fd4a5f;
-    }
-
-  }
-
-  /* 文章列表 */
-
+  // 文章列表
   .article-list {
     padding-top: 20rpx;
     line-height: 1;
@@ -259,7 +227,7 @@
     }
   }
 
-  /* 小图模式 */
+  // 小图模式
   .show-type__10 {
     display: flex;
 
@@ -276,7 +244,7 @@
     }
   }
 
-  /* 大图模式 */
+  // 大图模式
   .show-type__20 .article-item__image .image {
     width: 100%;
   }
