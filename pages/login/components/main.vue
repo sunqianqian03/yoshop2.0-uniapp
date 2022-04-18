@@ -271,17 +271,17 @@
 
   // 页面头部
   .header {
-    margin-bottom: 50rpx;
+    margin-bottom: 60rpx;
 
     .title {
       color: #191919;
-      font-size: 50rpx;
+      font-size: 54rpx;
     }
 
     .sub-title {
       margin-top: 20rpx;
       color: #b3b3b3;
-      font-size: 25rpx;
+      font-size: 28rpx;
     }
   }
 
@@ -290,11 +290,11 @@
     display: flex;
     padding: 18rpx;
     border-bottom: 1rpx solid #f3f1f2;
-    margin-bottom: 25rpx;
+    margin-bottom: 30rpx;
     height: 96rpx;
 
     &--input {
-      font-size: 26rpx;
+      font-size: 28rpx;
       letter-spacing: 1rpx;
       flex: 1;
       height: 100%;
@@ -318,7 +318,7 @@
 
     // 短信验证码
     .captcha-sms {
-      font-size: 22rpx;
+      font-size: 28rpx;
       line-height: 50rpx;
       padding-right: 20rpx;
 
@@ -337,14 +337,14 @@
   .login-button {
     width: 100%;
     height: 86rpx;
-    margin-top: 70rpx;
-    // background: #cea26a;
+    margin-top: 80rpx;
     background: linear-gradient(to right, #ecb53c, #ff9211);
-    text-align: center;
-    line-height: 86rpx;
     color: #fff;
     border-radius: 80rpx;
     box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
     letter-spacing: 5rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>
