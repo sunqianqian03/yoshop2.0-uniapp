@@ -82,6 +82,9 @@ $http.requestEnd = options => {
   }
 }
 
+// 当前是否显示modal
+let loginModal = false
+
 // 所有接口数据处理（可在接口里设置不调用此方法）
 // 此方法需要开发者根据各自的接口返回类型修改，以下只是模板
 $http.dataFactory = async res => {
@@ -97,7 +100,6 @@ $http.dataFactory = async res => {
     // 返回错误的结果(catch接受数据)
     return Promise.reject({
       statusCode: res.response.statusCode,
-      // errMsg: "数据工厂验证不通过"
       errMsg: 'http状态码错误'
     })
   }
@@ -114,7 +116,7 @@ $http.dataFactory = async res => {
     // 返回错误的结果(catch接受数据)
     return Promise.reject({
       statusCode: res.response.statusCode,
-      errMsg: "数据工厂验证不通过"
+      errMsg: "请检查api地址能否访问正常"
     })
   }
 
@@ -131,25 +133,38 @@ $http.dataFactory = async res => {
   if (httpData.status == 401) {
     // 401也有可能是后端登录态到期, 所以要清空本地的登录状态
     store.dispatch('Logout')
-    // 弹窗告诉用户去登录
-    uni.showModal({
-      title: '温馨提示',
-      content: '此时此刻需要您登录喔~',
-      // showCancel: false,
-      confirmText: "去登录",
-      cancelText: "再逛会",
-      success: res => {
-        if (res.confirm) {
-          uni.navigateTo({
-            url: "/pages/login/index"
-          })
+
+    // 防止重复弹窗
+    if (!loginModal) {
+      loginModal = true
+      // 弹窗告诉用户去登录
+      uni.showModal({
+        title: '温馨提示',
+        content: '此时此刻需要您登录喔~',
+        // showCancel: false,
+        confirmText: "去登录",
+        cancelText: "再逛会",
+        success: res => {
+          if (res.confirm) {
+            uni.navigateTo({
+              url: "/pages/login/index"
+            })
+          }
+          if (res.cancel && getCurrentPages().length > 1) {
+            uni.navigateBack()
+          }
+          loginModal = false
         }
-        if (res.cancel && getCurrentPages().length > 1) {
-          uni.navigateBack()
-        }
-      }
+      })
+    }
+    // 返回错误的结果(catch接受数据)
+    return Promise.reject({
+      statusCode: 0,
+      errMsg: httpData.message,
+      result: httpData
     })
   }
+
   // 其他错误提示
   if (httpData.status == 500) {
     if (res.isPrompt) {
