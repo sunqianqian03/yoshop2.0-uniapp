@@ -2,7 +2,9 @@
   <view class="container">
     <view class="wechatapp">
       <view class="header">
-        <open-data class="avatar" type="userAvatarUrl"></open-data>
+        <!-- <open-data class="avatar" type="userAvatarUrl"></open-data> -->
+        <image class="image"
+          :src="storeInfo && storeInfo.image_url ? storeInfo.image_url : '/static/default-avatar.png'"></image>
       </view>
     </view>
     <view class="auth-title">申请获取以下权限</view>
@@ -20,11 +22,14 @@
 <script>
   import store from '@/store'
   import { isEmpty } from '@/utils/util'
+  import SettingModel from '@/common/model/Setting'
 
   export default {
 
     data() {
       return {
+        // 商城基本信息
+        storeInfo: undefined,
         // 微信小程序登录凭证 (code)
         // 提交到后端，用于换取openid
         code: ''
@@ -32,11 +37,18 @@
     },
 
     created() {
-      // 获取code
-      // this.getCode()
+      // 获取商城基本信息
+      this.getStoreInfo()
     },
 
     methods: {
+
+      // 获取商城基本信息
+      getStoreInfo() {
+        SettingModel.item('store').then(store => this.storeInfo = store)
+
+        // SettingModel.h5Url(true)
+      },
 
       // 获取code
       // https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html
@@ -144,6 +156,7 @@
           this.$navTo('pages/index/index')
         }
       }
+
     }
   }
 </script>
@@ -170,6 +183,12 @@
       border-radius: 50%;
       overflow: hidden;
       box-shadow: 2rpx 0 10rpx rgba(50, 50, 50, 0.3);
+
+      .image {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
@@ -190,12 +209,13 @@
 
     .button {
       height: 88rpx;
-      line-height: 88rpx;
       background: #04be01;
       color: #fff;
       font-size: 30rpx;
       border-radius: 999rpx;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
@@ -206,12 +226,13 @@
 
     .button {
       height: 88rpx;
-      line-height: 88rpx;
       background: #dfdfdf;
       color: #fff;
       font-size: 30rpx;
       border-radius: 999rpx;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 </style>
