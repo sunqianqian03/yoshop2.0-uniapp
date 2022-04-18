@@ -29,17 +29,21 @@
 			<!-- 空布局 -->
 			<mescroll-empty v-if="isShowEmpty" :option="mescroll.optUp.empty" @emptyclick="emptyClick"></mescroll-empty>
 
-			<!-- 上拉加载区域 (下拉刷新时不显示, 支付宝小程序子组件传参给子子组件仍报单项数据流的异常,暂时不通过mescroll-up组件实现)-->
-			<!-- <mescroll-up v-if="mescroll.optUp.use && !isDownLoading && upLoadType!==3" :option="mescroll.optUp" :type="upLoadType"></mescroll-up> -->
-			<view v-if="mescroll.optUp.use && !isDownLoading && upLoadType!==3" class="mescroll-upwarp" :style="{'background':mescroll.optUp.bgColor,'color':mescroll.optUp.textColor}">
-				<!-- 加载中 (此处不能用v-if,否则android小程序快速上拉可能会不断触发上拉回调) -->
-				<view v-show="upLoadType===1">
-					<view class="upwarp-progress mescroll-rotate" :style="{'border-color':mescroll.optUp.textColor}"></view>
-					<view class="upwarp-tip">{{ mescroll.optUp.textLoading }}</view>
-				</view>
-				<!-- 无数据 -->
-				<view v-if="upLoadType===2" class="upwarp-nodata">{{ mescroll.optUp.textNoMore }}</view>
-			</view>
+
+      <view class="mescroll-upwarp--container">
+        <!-- 上拉加载区域 (下拉刷新时不显示, 支付宝小程序子组件传参给子子组件仍报单项数据流的异常,暂时不通过mescroll-up组件实现)-->
+        <!-- <mescroll-up v-if="mescroll.optUp.use && !isDownLoading && upLoadType!==3" :option="mescroll.optUp" :type="upLoadType"></mescroll-up> -->
+        <view v-if="mescroll.optUp.use && !isDownLoading && upLoadType!==3" class="mescroll-upwarp" :style="{'background':mescroll.optUp.bgColor,'color':mescroll.optUp.textColor}">
+          <!-- 加载中 (此处不能用v-if,否则android小程序快速上拉可能会不断触发上拉回调) -->
+          <view v-show="upLoadType===1">
+            <view class="upwarp-progress mescroll-rotate" :style="{'border-color':mescroll.optUp.textColor}"></view>
+            <view class="upwarp-tip">{{ mescroll.optUp.textLoading }}</view>
+          </view>
+          <!-- 无数据 -->
+          <view v-if="upLoadType===2" class="upwarp-nodata">{{ mescroll.optUp.textNoMore }}</view>
+        </view>
+      </view>
+      
 		</view>
 		
 		<!-- 底部是否偏移TabBar的高度(默认仅在H5端的tab页生效) -->
@@ -341,7 +345,7 @@
 	};
 </script>
 
-<style>
+<style scoped>
 	@import "./mescroll-body.css";
 	@import "./components/mescroll-down.css";
 	@import './components/mescroll-up.css';
