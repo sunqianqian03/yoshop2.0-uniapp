@@ -68,8 +68,8 @@ export default {
 }
 
 .mescroll-empty .empty-tip {
-	margin-top: 30rpx;
-	font-size: 26rpx;
+	margin-top: 40rpx;
+	font-size: 28rpx;
 	color: gray;
 }
 
