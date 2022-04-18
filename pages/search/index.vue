@@ -12,7 +12,7 @@
         </view>
       </view>
       <view class="search-button">
-        <button class="button" @click="onSearch" type="warn"> 搜索 </button>
+        <button class="button" @click="onSearch" type="warn">搜索</button>
       </view>
     </view>
     <view class="history" v-if="historySearch.length">
@@ -153,7 +153,8 @@
         input {
           font-size: 28rpx;
           height: 64rpx;
-          line-height: 64rpx;
+          display: flex;
+          align-items: center;
 
           .input-placeholder {
             color: #aba9a9;
@@ -170,7 +171,6 @@
     box-sizing: border-box;
 
     .button {
-      line-height: 64rpx;
       height: 64rpx;
       font-size: 28rpx;
       border-radius: 0 5px 5px 0;
