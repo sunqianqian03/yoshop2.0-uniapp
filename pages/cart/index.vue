@@ -27,7 +27,7 @@
           <image class="image" :src="item.goods.goods_image" mode="scaleToFill"></image>
         </view>
         <view class="item-content">
-          <view class="goods-title twoline-hide"><text>{{ item.goods.goods_name }}</text></view>
+          <view class="goods-title"><text class="twoline-hide">{{ item.goods.goods_name }}</text></view>
           <view class="goods-props clearfix">
             <view class="goods-props-item" v-for="(props, idx) in item.goods.skuInfo.goods_props" :key="idx">
               <text>{{ props.value.name }}</text>
@@ -46,8 +46,7 @@
       </view>
     </view>
     <!-- 购物车数据为空 -->
-    <empty v-if="!list.length" :isLoading="isLoading" :custom-style="{ padding: '180rpx 50rpx' }"
-      tips="您的购物车是空的, 快去逛逛吧">
+    <empty v-if="!list.length" :isLoading="isLoading" :custom-style="{ padding: '180rpx 50rpx' }" tips="您的购物车是空的, 快去逛逛吧">
       <view slot="slot" class="empty-ipt" @click="onTargetIndex">
         <text>去逛逛</text>
       </view>
@@ -69,12 +68,10 @@
         <view class="btn-wrapper">
           <!-- dev:下面的disabled条件使用checkedIds.join方式判断 -->
           <!-- dev:通常情况下vue项目使用checkedIds.length更合理, 但是length属性在微信小程序中不起作用 -->
-          <view v-if="mode == 'normal'" class="btn-item btn-main" :class="{ disabled: checkedIds.join() == '' }"
-            @click="handleOrder()">
+          <view v-if="mode == 'normal'" class="btn-item btn-main" :class="{ disabled: checkedIds.join() == '' }" @click="handleOrder()">
             <text>去结算 {{ checkedIds.length > 0 ? `(${checkedIds.length})` : '' }}</text>
           </view>
-          <view v-if="mode == 'edit'" class="btn-item btn-main" :class="{ disabled: !checkedIds.length }"
-            @click="handleDelete()">
+          <view v-if="mode == 'edit'" class="btn-item btn-main" :class="{ disabled: !checkedIds.length }" @click="handleDelete()">
             <text>删除</text>
           </view>
         </view>

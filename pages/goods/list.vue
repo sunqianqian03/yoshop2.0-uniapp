@@ -1,6 +1,5 @@
 <template>
-  <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true }" @down="downCallback"
-    :up="upOption" @up="upCallback">
+  <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true }" @down="downCallback" :up="upOption" @up="upCallback">
     <!-- 页面头部 -->
     <view class="header">
       <search class="search" :tips="options.search ? options.search : '搜索商品'" @event="handleSearch" />
@@ -26,7 +25,8 @@
             <text class="iconfont icon-arrow-up"></text>
           </view>
           <view class="icon down" :class="{ active: sortType === 'price' && sortPrice }">
-            <text class="iconfont icon-arrow-down"></text> </view>
+            <text class="iconfont icon-arrow-down"></text>
+          </view>
         </view>
       </view>
     </view>
@@ -42,8 +42,8 @@
           </view>
           <view class="goods-item_right">
             <!-- 商品名称 -->
-            <view class="goods-name twoline-hide">
-              <text>{{ item.goods_name }}</text>
+            <view class="goods-name">
+              <text class="twoline-hide">{{ item.goods_name }}</text>
             </view>
             <view class="goods-item_desc">
               <!-- 商品卖点 -->
@@ -70,8 +70,8 @@
           </view>
           <view class="detail">
             <!-- 商品标题 -->
-            <view class="goods-name twoline-hide">
-              {{ item.goods_name }}
+            <view class="goods-name">
+              <text class="twoline-hide">{{ item.goods_name }}</text>
             </view>
             <!-- 商品价格 -->
             <view class="detail-price oneline-hide">

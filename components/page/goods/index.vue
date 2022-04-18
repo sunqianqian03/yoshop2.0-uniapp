@@ -14,8 +14,8 @@
               </view>
               <view class="goods-item_right">
                 <!-- 商品名称 -->
-                <view v-if="itemStyle.show.includes('goodsName')" class="goods-name twoline-hide">
-                  <text>{{ dataItem.goods_name }}</text>
+                <view v-if="itemStyle.show.includes('goodsName')" class="goods-name">
+                  <text class="twoline-hide">{{ dataItem.goods_name }}</text>
                 </view>
                 <view class="goods-item_desc">
                   <!-- 商品卖点 -->
@@ -29,7 +29,8 @@
                   <!-- 商品价格 -->
                   <view class="desc_footer">
                     <text v-if="itemStyle.show.includes('goodsPrice')" class="price_x">¥{{ dataItem.goods_price_min }}</text>
-                    <text class="price_y col-9" v-if="itemStyle.show.includes('linePrice') && dataItem.line_price_min > 0">¥{{ dataItem.line_price_min }}</text>
+                    <text class="price_y col-9"
+                      v-if="itemStyle.show.includes('linePrice') && dataItem.line_price_min > 0">¥{{ dataItem.line_price_min }}</text>
                   </view>
                 </view>
               </view>
@@ -43,13 +44,14 @@
             </view>
             <view class="detail">
               <!-- 商品标题 -->
-              <view v-if="itemStyle.show.includes('goodsName')" class="goods-name twoline-hide">
-                {{ dataItem.goods_name }}
+              <view v-if="itemStyle.show.includes('goodsName')" class="goods-name">
+                <text class="twoline-hide">{{ dataItem.goods_name }}</text>
               </view>
               <!-- 商品价格 -->
               <view class="detail-price oneline-hide">
                 <text v-if="itemStyle.show.includes('goodsPrice')" class="goods-price f-30 col-m">￥{{ dataItem.goods_price_min }}</text>
-                <text v-if="itemStyle.show.includes('linePrice') && dataItem.line_price_min > 0" class="line-price col-9 f-24">￥{{ dataItem.line_price_min }}</text>
+                <text v-if="itemStyle.show.includes('linePrice') && dataItem.line_price_min > 0"
+                  class="line-price col-9 f-24">￥{{ dataItem.line_price_min }}</text>
               </view>
             </view>
           </block>
@@ -61,7 +63,6 @@
 </template>
 
 <script>
-
   export default {
     name: "Goods",
     /**

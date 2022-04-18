@@ -13,8 +13,8 @@
         <!-- 小图模式 -->
         <block v-if="item.show_type == 10">
           <view class="article-item__left flex-box">
-            <view class="article-item__title twoline-hide">
-              <text>{{ item.title }}</text>
+            <view class="article-item__title">
+              <text class="twoline-hide">{{ item.title }}</text>
             </view>
             <view class="article-item__footer m-top10">
               <text class="article-views f-24 col-8">{{ item.show_views }}次浏览</text>
@@ -26,8 +26,8 @@
         </block>
         <!-- 大图模式 -->
         <block v-if="item.show_type == 20">
-          <view class="article-item__title twoline-hide">
-            <text>{{ item.title }}</text>
+          <view class="article-item__title">
+            <text class="twoline-hide">{{ item.title }}</text>
           </view>
           <view class="article-item__image m-top20">
             <image class="image" mode="widthFix" :src="item.image_url"></image>
