@@ -133,7 +133,7 @@
           background: #fff;
 
           .goods-name {
-            height: 64rpx;
+            height: 70rpx;
             line-height: 1.3;
             white-space: normal;
             color: #484848;
@@ -213,7 +213,7 @@
 
           .goods-name {
             margin-top: 20rpx;
-            height: 64rpx;
+            height: 70rpx;
             line-height: 1.3;
             white-space: normal;
             color: #484848;

@@ -362,7 +362,7 @@
 
       .goods-name {
         margin-top: 10rpx;
-        height: 64rpx;
+        height: 70rpx;
         line-height: 1.3;
         white-space: normal;
         color: #484848;
@@ -442,7 +442,7 @@
       background: #fff;
 
       .goods-name {
-        height: 64rpx;
+        height: 70rpx;
         line-height: 32rpx;
         white-space: normal;
         color: #484848;
