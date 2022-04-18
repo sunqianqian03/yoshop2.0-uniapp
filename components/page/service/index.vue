@@ -1,6 +1,6 @@
 <template>
   <!-- 在线客服 -->
-  <view v-if="!(params.type === 'chat' && !isMpWeiXin)" class="diy-service" :style="{ right: `${itemStyle.right}%`, bottom: `${itemStyle.bottom}%` }">
+  <view v-if="!(params.type === 'chat' && !isMpWeiXin)" class="diy-service" :style="{ '--right': `${right}px`, '--bottom': `${bottom}px` }">
     <!-- 拨打电话 -->
     <block v-if="params.type === 'phone'">
       <view class="service-icon" @click="onMakePhoneCall">
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+  const rpx = uni.getSystemInfoSync().windowWidth / 750
+
   export default {
 
     /**
@@ -38,6 +40,14 @@
       return {
         isMpWeiXin: false,
         isShow: true
+      }
+    },
+    computed: {
+      right() {
+        return 2 * this.itemStyle.right * rpx
+      },
+      bottom() {
+        return 2 * this.itemStyle.bottom * rpx
       }
     },
 
@@ -71,6 +81,9 @@
   .diy-service {
     position: fixed;
     z-index: 999;
+    right: calc(var(--window-right) + var(--right));
+    bottom: calc(constant(safe-area-inset-bottom) + var(--window-bottom) + var(--bottom));
+    bottom: calc(env(safe-area-inset-bottom) + var(--window-bottom) + var(--bottom));
 
     .service-icon {
       padding: 10rpx;
@@ -79,6 +92,8 @@
         display: block;
         width: 90rpx;
         height: 90rpx;
+        border-radius: 50%;
+        box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
       }
     }
 
