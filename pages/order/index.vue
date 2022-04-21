@@ -526,10 +526,15 @@
       .btn-item {
         border-radius: 10rpx;
         padding: 6rpx 20rpx;
+        margin-left: 15rpx;
         font-size: 28rpx;
         float: right;
         color: #383838;
         border: 1rpx solid #a8a8a8;
+
+        &:last-child {
+          margin-left: 0;
+        }
 
         &.active {
           color: $uni-text-color-active;
