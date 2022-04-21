@@ -1,75 +1,32 @@
 <template>
   <view class="container">
     <!-- 搜索框 -->
-    <search tips="搜索商品" @event="$navTo('pages/search/index')" />
+    <search class="search" tips="搜索商品" @event="$navTo('pages/search/index')" />
 
-    <!-- 分类样式：一级分类(大图) 10 -->
-    <view class="cate-content" v-if="templet.style == 10 && list.length > 0">
-      <view class="cate-wrapper cate_style__10">
-        <scroll-view :scroll-y="true" :style="{ height: `${scrollHeight - 10}px` }">
-          <view class="cate-item" v-for="(item, index) in list" :key="index"
-            @click="onTargetGoodsList(item.category_id)">
-            <image v-if="item.image" class="image" mode="widthFix" :src="item.image.preview_url"></image>
-          </view>
-        </scroll-view>
-      </view>
-    </view>
+    <!-- 一级分类 -->
+    <primary v-if="setting.style == PageCategoryStyleEnum.ONE_LEVEL_BIG.value || setting.style == PageCategoryStyleEnum.ONE_LEVEL_SMALL.value"
+      :display="setting.style" :list="list" />
 
-    <!-- 分类样式：一级分类(小图) 11 -->
-    <view class="cate-content" v-else-if="templet.style == 11 && list.length > 0">
-      <view class="cate-wrapper cate_style__11">
-        <scroll-view class="clear" :scroll-y="true" :style="{ height: `${scrollHeight - 10}px` }">
-          <view class="cate-item" v-for="(item, index) in list" :key="index"
-            @click="onTargetGoodsList(item.category_id)">
-            <image v-if="item.image" class="image" :src="item.image.preview_url"></image>
-            <text class="f-26">{{ item.name }}</text>
-          </view>
-        </scroll-view>
-      </view>
-    </view>
+    <!-- 二级分类 -->
+    <secondary v-if="setting.style == PageCategoryStyleEnum.TWO_LEVEL.value" :list="list" />
 
-    <!-- 分类样式：二级分类 20 -->
-    <view class="cate-content dis-flex" v-else-if="templet.style == 20 && list.length > 0">
-
-      <!-- 左侧 一级分类 -->
-      <scroll-view class="cate-left f-28" :scroll-y="true" :style="{ height: `${scrollHeight}px` }">
-        <text class="type-nav" :class="{ selected: curIndex == index }" v-for="(item, index) in list" :key="index"
-          @click="handleSelectNav(index)">{{ item.name }}</text>
-      </scroll-view>
-
-      <!-- 右侧 二级分类 -->
-      <scroll-view class="cate-right b-f" :scroll-top="scrollTop" :scroll-y="true"
-        :style="{ height: `${scrollHeight}px` }">
-        <view v-if="list[curIndex]">
-          <view class="cate-right-cont">
-            <view class="cate-two-box">
-              <view class="cate-cont-box">
-                <view class="flex-three" v-for="(item, idx) in list[curIndex].children" :key="idx"
-                  @click="onTargetGoodsList(item.category_id)">
-                  <view class="cate-img-padding">
-                    <view v-if="item.image" class="cate-img">
-                      <image class="image" mode="scaleToFill" :src="item.image.preview_url"></image>
-                    </view>
-                  </view>
-                  <text class="name oneline-hide">{{ item.name }}</text>
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-    <empty v-if="!list.length" :isLoading="isLoading" />
+    <!-- 分类+商品 -->
+    <commodity v-if="setting.style == PageCategoryStyleEnum.COMMODITY.value" ref="mescrollItem" :list="list" :setting="setting" />
   </view>
 </template>
 
 <script>
+  import MescrollCompMixin from '@/components/mescroll-uni/mixins/mescroll-comp'
   import { setCartTabBadge } from '@/core/app'
   import SettingKeyEnum from '@/common/enum/setting/Key'
+  import { PageCategoryStyleEnum } from '@/common/enum/store/page/category'
   import SettingModel from '@/common/model/Setting'
   import * as CategoryApi from '@/api/category'
-  import Search from '@/components/search'
   import Empty from '@/components/empty'
+  import Search from '@/components/search'
+  import Primary from './components/primary'
+  import Secondary from './components/secondary'
+  import Commodity from './components/commodity'
 
   // 最后一次刷新时间
   let lastRefreshTime;
@@ -77,20 +34,20 @@
   export default {
     components: {
       Search,
-      Empty
+      Empty,
+      Primary,
+      Secondary,
+      Commodity
     },
+    mixins: [MescrollCompMixin],
     data() {
       return {
-        // 列表高度
-        scrollHeight: 0,
-        // 一级分类：指针
-        curIndex: 0,
-        // 内容区竖向滚动条位置
-        scrollTop: 0,
+        // 枚举类
+        PageCategoryStyleEnum,
         // 分类列表
         list: [],
         // 分类模板设置
-        templet: {},
+        setting: {},
         // 正在加载中
         isLoading: true
       }
@@ -100,11 +57,8 @@
      * 生命周期函数--监听页面加载
      */
     onLoad() {
-      const app = this
-      // 设置分类列表高度
-      app.setListHeight()
       // 加载页面数据
-      app.onRefreshPage()
+      this.onRefreshPage()
     },
 
     /**
@@ -117,7 +71,6 @@
         this.onRefreshPage()
       }
     },
-
     methods: {
 
       // 刷新页面
@@ -130,9 +83,7 @@
         setCartTabBadge()
       },
 
-      /**
-       * 获取页面数据
-       */
+      // 获取页面数据
       getPageData() {
         const app = this
         app.isLoading = true
@@ -145,7 +96,7 @@
           ])
           .then(result => {
             // 初始化分类模板设置
-            app.initTemplet(result[0])
+            app.initSetting(result[0])
             // 初始化分类列表数据
             app.initCategory(result[1])
           })
@@ -156,8 +107,8 @@
        * 初始化分类模板设置
        * @param {Object} result
        */
-      initTemplet(setting) {
-        this.templet = setting[SettingKeyEnum.PAGE_CATEGORY_TEMPLATE.value]
+      initSetting(setting) {
+        this.setting = setting[SettingKeyEnum.PAGE_CATEGORY_TEMPLATE.value]
       },
 
       /**
@@ -165,34 +116,8 @@
        * @param {Object} result
        */
       initCategory(result) {
-        const app = this
-        const data = result.data
-        app.list = data.list
+        this.list = result.data.list
       },
-
-      /**
-       * 设置分类列表高度
-       */
-      setListHeight() {
-        const app = this
-        uni.getSystemInfo({
-          success(res) {
-            app.scrollHeight = res.windowHeight - 47
-          }
-        })
-      },
-
-      // 一级分类：选中分类
-      handleSelectNav(index) {
-        const app = this
-        app.curIndex = index
-        app.scrollTop = 0
-      },
-
-      // 跳转至商品列表页
-      onTargetGoodsList(categoryId) {
-        this.$navTo('pages/goods/list', { categoryId })
-      }
 
     },
 
@@ -229,141 +154,13 @@
   }
 </style>
 <style lang="scss" scoped>
-  .cate-content {
-    background: #fff;
-  }
-
-  .cate-wrapper {
-    padding: 0 20rpx 20rpx 20rpx;
-    box-sizing: border-box;
-  }
-
-  /* 一级分类(大图) 10 */
-
-  .cate_style__10 .cate-item {
-    margin-bottom: 18rpx;
-  }
-
-  .cate_style__10 .cate-item:last-child {
-    margin-bottom: 0;
-  }
-
-  .cate_style__10 .cate-item image {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  /* 一级分类(小图) 11 */
-
-  .cate_style__11 .cate-item {
-    float: left;
-    padding: 25rpx;
-    width: 33.3333%;
-    text-align: center;
-    box-sizing: border-box;
-  }
-
-  .cate_style__11 .cate-item .image {
-    display: block;
-    width: 100%;
-    height: 33vw;
-    margin-bottom: 10rpx;
-
-
-
-  }
-
-  .cate_style__11 .cate-item text {
-    display: block;
-    color: #555;
-  }
-
-  /* 二级分类 20 */
-
-  .cate-content {
-    width: 100%;
-  }
-
-  .cate-left {
-    flex-direction: column;
-    display: flex;
-    flex: 0 0 23%;
-    color: #444;
-    height: 100%;
-    background: #f8f8f8;
-  }
-
-  .cate-right {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .cate-right-cont {
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    align-content: flex-start;
-    padding-top: 15rpx;
-  }
-
-  .type-nav {
-    position: relative;
-    height: 90rpx;
-    z-index: 10;
-    display: block;
-    font-size: 26rpx;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .type-nav.selected {
-    background: #fff;
-    color: #fa2209;
-    border-right: none;
-    font-size: 28rpx;
-  }
-
-  .cate-cont-box {
-    margin-bottom: 30rpx;
-    padding-bottom: 10rpx;
-    background: #fff;
-    overflow: hidden;
-
-    .name {
-      display: block;
-      padding-bottom: 30rpx;
-      text-align: center;
-      font-size: 26rpx;
-      color: #444444;
-    }
-
-    .cate-img-padding {
-      padding: 16rpx 16rpx 4rpx 16rpx;
-    }
-
-    .cate-img {
-      position: relative;
-      width: 100%;
-      padding-top: 100%;
-
-      .image {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        border-radius: 10rpx;
-      }
-    }
-
-  }
-
-  .cate-two-box {
-    width: 100%;
-    padding: 0 10px;
+  // 搜索框
+  .search {
+    position: fixed;
+    top: var(--window-top);
+    left: var(--window-left);
+    right: var(--window-right);
+    z-index: 9;
+    padding-bottom: 20rpx;
   }
 </style>
