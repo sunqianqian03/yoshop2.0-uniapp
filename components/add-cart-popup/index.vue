@@ -168,6 +168,6 @@
   .add-cart {
     font-size: 38rpx;
     padding: 0 20rpx;
-    color: #ff2e34;
+    color: #fa2209;
   }
 </style>
