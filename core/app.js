@@ -34,12 +34,12 @@ export const showError = (msg, callback) => {
 /**
  * 显示纯文字提示框
  */
-export const showToast = (msg, duration = 1500) => {
+export const showToast = (msg, duration = 1500, mask = true) => {
   uni.showToast({
     title: msg, // 提示的内容
     icon: 'none',
-    mask: true, // 是否显示透明蒙层，防止触摸穿透
-    duration // 提示的延迟时间，单位毫秒，默认：1500	
+    mask, // 是否显示透明蒙层，防止触摸穿透
+    duration // 提示的延迟时间，单位毫秒，默认：1500  
   })
 }
 

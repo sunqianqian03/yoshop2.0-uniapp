@@ -2,8 +2,9 @@ import Vue from 'vue'
 import uView from 'uview-ui'
 import App from './App'
 import store from './store'
-import platform from './core/platform'
 import bootstrap from './core/bootstrap'
+import mixin from './core/mixins/app'
+import './js_sdk/ican-H5Api/ican-H5Api'
 import {
   navTo,
   showToast,
@@ -11,17 +12,16 @@ import {
   showError,
   getShareUrlParams
 } from './core/app'
-import './js_sdk/ican-H5Api/ican-H5Api'
 
 Vue.config.productionTip = false
 
 App.mpType = 'app'
 
-// 当前运行的终端
-Vue.prototype.$platform = platform
-
 // 载入uView库
 Vue.use(uView)
+
+// 全局mixin
+Vue.mixin(mixin)
 
 // 挂载全局函数
 Vue.prototype.$toast = showToast

@@ -1,7 +1,7 @@
 <template>
   <view v-if="!isFirstload" class="container">
     <!-- 页面头部 -->
-    <view class="main-header" :style="{ height: $platform == 'H5' ? '240rpx' : '280rpx', paddingTop: $platform == 'H5' ? '0' : '80rpx' }">
+    <view class="main-header" :style="{ height: platform == 'H5' ? '260rpx' : '320rpx', paddingTop: platform == 'H5' ? '0' : '80rpx' }">
       <image class="bg-image" src="/static/background/user-header2.png" mode="scaleToFill"></image>
       <!-- 用户信息 -->
       <view v-if="isLogin" class="user-info">
@@ -107,7 +107,7 @@
               <text v-else class="text">99+</text>
             </view>
           </view>
-          <view v-if="item.type == 'button' && $platform == 'MP-WEIXIN'" class="service-item">
+          <view v-if="item.type == 'button' && platform == 'MP-WEIXIN'" class="service-item">
             <button class="btn-normal" :open-type="item.openType">
               <view class="item-icon">
                 <text class="iconfont" :class="[`icon-${item.icon}`]"></text>
@@ -169,8 +169,6 @@
       return {
         // 枚举类
         SettingKeyEnum,
-        // 当前运行的终端 (此处并不冗余,因为微信小程序端view层无法直接读取$platform)
-        $platform: this.$platform,
         // 正在加载
         isLoading: true,
         // 首次加载

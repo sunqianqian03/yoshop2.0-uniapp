@@ -340,7 +340,7 @@
         // 如果只有一种配送方式则不显示选项卡
         app.isShowTab = setting.deliveryType.length > 1
         // 当前选择支付方式 (如果是微信小程序默认使用微信支付)
-        if (app.$platform === 'MP-WEIXIN') {
+        if (app.platform === 'MP-WEIXIN') {
           app.curPayType = PayTypeEnum.WECHAT.value
         }
       },
