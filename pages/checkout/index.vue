@@ -122,7 +122,7 @@
       <view class="pay-item dis-flex flex-x-between" @click="handleSelectPayType(PayTypeEnum.WECHAT.value)">
         <view class="item-left dis-flex flex-y-center">
           <view class="item-left_icon wechat">
-            <text class="iconfont icon-wxpay"></text>
+            <text class="iconfont icon-wechat-pay"></text>
           </view>
           <view class="item-left_text">
             <text>{{ PayTypeEnum.WECHAT.name }}</text>
@@ -137,7 +137,7 @@
       <view class="pay-item dis-flex flex-x-between" @click="handleSelectPayType(PayTypeEnum.BALANCE.value)">
         <view class="item-left dis-flex flex-y-center">
           <view class="item-left_icon balance">
-            <text class="iconfont icon-qiandai"></text>
+            <text class="iconfont icon-balance-pay"></text>
           </view>
           <view class="item-left_text">
             <text>{{ PayTypeEnum.BALANCE.name }}</text>
@@ -340,7 +340,7 @@
         // 如果只有一种配送方式则不显示选项卡
         app.isShowTab = setting.deliveryType.length > 1
         // 当前选择支付方式 (如果是微信小程序默认使用微信支付)
-        if (app.platform === 'MP-WEIXIN') {
+        if (app.$platform === 'MP-WEIXIN') {
           app.curPayType = PayTypeEnum.WECHAT.value
         }
       },

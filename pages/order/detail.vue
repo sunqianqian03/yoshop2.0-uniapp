@@ -228,7 +228,7 @@
           <view class="pay-item dis-flex flex-x-between" @click="onSelectPayType(PayTypeEnum.WECHAT.value)">
             <view class="item-left dis-flex flex-y-center">
               <view class="item-left_icon wechat">
-                <text class="iconfont icon-wxpay"></text>
+                <text class="iconfont icon-wechat-pay"></text>
               </view>
               <view class="item-left_text">
                 <text>{{ PayTypeEnum.WECHAT.name }}</text>
@@ -240,7 +240,7 @@
           <view class="pay-item dis-flex flex-x-between" @click="onSelectPayType(PayTypeEnum.BALANCE.value)">
             <view class="item-left dis-flex flex-y-center">
               <view class="item-left_icon balance">
-                <text class="iconfont icon-qiandai"></text>
+                <text class="iconfont icon-balance-pay"></text>
               </view>
               <view class="item-left_text">
                 <text>{{ PayTypeEnum.BALANCE.name }}</text>
