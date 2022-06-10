@@ -122,7 +122,6 @@
         const app = this
         if (!app.isLoading && !app.smsState && app.formValidation(GET_CAPTCHA)) {
           app.sendSmsCaptcha()
-          app.getCaptcha()
         }
       },
 
@@ -192,6 +191,7 @@
             // 执行定时器
             app.timer()
           })
+          .catch(() => app.getCaptcha())
           .finally(() => app.isLoading = false)
       },
 
