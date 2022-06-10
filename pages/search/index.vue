@@ -12,13 +12,13 @@
         </view>
       </view>
       <view class="search-button">
-        <button class="button" @click="onSearch" type="warn">搜索</button>
+        <view class="button" @click="onSearch">搜索</view>
       </view>
     </view>
     <view class="history" v-if="historySearch.length">
       <view class="his-head">
         <text class="title">最近搜索</text>
-        <text class="icon iconfont icon-lajixiang col-7" @click="clearSearch"></text>
+        <text class="icon iconfont icon-delete" @click="clearSearch"></text>
       </view>
       <view class="his-list">
         <view class="his-item" v-for="(val, index) in historySearch" :key="index">
@@ -173,8 +173,12 @@
     .button {
       height: 64rpx;
       font-size: 28rpx;
-      border-radius: 0 5px 5px 0;
+      border-radius: 0 10rpx 10rpx 0;
       background: #fa2209;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
@@ -194,7 +198,7 @@
     }
 
     .his-list {
-      padding: 10px 0;
+      padding: 20rpx 0;
       overflow: hidden;
 
       .his-item {
@@ -210,7 +214,7 @@
           border-radius: 100rpx;
           background: #fff;
           font-size: 26rpx;
-          border: 1px solid #efefef;
+          border: 1rpx solid #efefef;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
