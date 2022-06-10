@@ -112,7 +112,7 @@
      */
     onShow() {
       this.canReset && this.onRefreshList()
-      this.canReset = true
+      // this.canReset = true
     },
 
     methods: {

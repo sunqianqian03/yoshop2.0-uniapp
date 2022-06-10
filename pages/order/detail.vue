@@ -25,8 +25,7 @@
             <image class="image" src="/static/order/status/received.png" mode="aspectFit"></image>
           </block>
           <!-- 已取消/待取消 -->
-          <block
-            v-if="order.order_status == OrderStatusEnum.CANCELLED.value || order.order_status == OrderStatusEnum.APPLY_CANCEL.value">
+          <block v-if="order.order_status == OrderStatusEnum.CANCELLED.value || order.order_status == OrderStatusEnum.APPLY_CANCEL.value">
             <image class="image" src="/static/order/status/close.png" mode="aspectFit"></image>
           </block>
         </view>
@@ -37,8 +36,7 @@
       <!-- 下一步操作 -->
       <view class="next-action" v-if="order.order_status == OrderStatusEnum.NORMAL.value">
         <view v-if="order.pay_status == PayStatusEnum.PENDING.value" class="action-btn" @click="onPay()">去支付</view>
-        <view
-          v-if="order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value"
+        <view v-if="order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value"
           class="action-btn" @click="onReceipt(order.order_id)">确认收货</view>
       </view>
     </view>
@@ -56,8 +54,7 @@
     </view>
 
     <!-- 物流信息 -->
-    <view
-      v-if="order.delivery_type == DeliveryTypeEnum.EXPRESS.value && order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.express"
+    <view v-if="order.delivery_type == DeliveryTypeEnum.EXPRESS.value && order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.express"
       class="express i-card" @click="handleTargetExpress()">
       <view class="main">
         <view class="info-item">
@@ -112,8 +109,7 @@
         <!-- 商品售后 -->
         <view class="goods-refund">
           <text v-if="goods.refund" class="stata-text">已申请售后</text>
-          <view v-else-if="order.isAllowRefund" class="action-btn"
-            @click.stop="handleApplyRefund(goods.order_goods_id)">申请售后</view>
+          <view v-else-if="order.isAllowRefund" class="action-btn" @click.stop="handleApplyRefund(goods.order_goods_id)">申请售后</view>
         </view>
       </view>
     </view>
@@ -195,8 +191,7 @@
         </block>
         <!-- 已支付进行中的订单 -->
         <block v-if="order.order_status != OrderStatusEnum.APPLY_CANCEL.value">
-          <block
-            v-if="order.pay_status == PayStatusEnum.SUCCESS.value && order.delivery_status == DeliveryStatusEnum.NOT_DELIVERED.value">
+          <block v-if="order.pay_status == PayStatusEnum.SUCCESS.value && order.delivery_status == DeliveryStatusEnum.NOT_DELIVERED.value">
             <view class="btn-item" @click="onCancel(order.order_id)">申请取消</view>
           </block>
         </block>
@@ -207,8 +202,7 @@
           <view class="btn-item active" @click="onPay()">去支付</view>
         </block>
         <!-- 确认收货 -->
-        <block
-          v-if="order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value">
+        <block v-if="order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value">
           <view class="btn-item active" @click="onReceipt(order.order_id)">确认收货</view>
         </block>
         <!-- 订单评价 -->
@@ -295,12 +289,6 @@
     onLoad({ orderId }) {
       // 当前订单ID
       this.orderId = orderId
-    },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow() {
       // 获取当前订单信息
       this.getOrderDetail()
     },
