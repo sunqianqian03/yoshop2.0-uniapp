@@ -19,15 +19,17 @@
     </view>
     <!-- 购物车商品列表 -->
     <view v-if="list.length" class="cart-list">
-      <view class="cart-item" v-for="(item, index) in list" :key="index" @click="onTargetGoods(item.goods_id)">
+      <view class="cart-item" v-for="(item, index) in list" :key="index">
         <label class="item-radio" @click.stop="handleCheckItem(item.id)">
           <radio class="radio" color="#fa2209" :checked="inArray(item.id, checkedIds)" />
         </label>
-        <view class="goods-image">
+        <view class="goods-image" @click="onTargetGoods(item.goods_id)">
           <image class="image" :src="item.goods.goods_image" mode="scaleToFill"></image>
         </view>
         <view class="item-content">
-          <view class="goods-title"><text class="twoline-hide">{{ item.goods.goods_name }}</text></view>
+          <view class="goods-title" @click="onTargetGoods(item.goods_id)">
+            <text class="twoline-hide">{{ item.goods.goods_name }}</text>
+          </view>
           <view class="goods-props clearfix">
             <view class="goods-props-item" v-for="(props, idx) in item.goods.skuInfo.goods_props" :key="idx">
               <text>{{ props.value.name }}</text>
@@ -39,7 +41,7 @@
               <text class="value">{{ item.goods.skuInfo.goods_price }}</text>
             </view>
             <view class="stepper">
-              <u-number-box :min="1" :value="item.goods_num" @change="onChangeStepper($event, item)" />
+              <u-number-box :min="1" :value="item.goods_num" :step="1" @change="onChangeStepper($event, item)" />
             </view>
           </view>
         </view>
