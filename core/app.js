@@ -81,7 +81,7 @@ export const buildUrL = (h5Url, path, params) => {
  */
 export const getShareUrlParams = (params) => {
   return util.urlEncode({
-    refereeId: store.getters.userId, // 推荐人ID
+    // refereeId: store.getters.userId, // 推荐人ID
     ...params
   })
 }
