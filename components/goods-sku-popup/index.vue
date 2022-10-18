@@ -532,7 +532,7 @@
         }
         if (that.initKey) {
           that.initKey = false;
-          that.init();
+          that.init(that.isManyCom);
         }
         // 更新选中sku的库存信息
         let select_sku_info = that.getListItem(
