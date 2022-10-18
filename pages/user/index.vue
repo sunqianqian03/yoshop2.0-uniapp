@@ -41,12 +41,12 @@
     <!-- 我的钱包 -->
     <view class="my-asset">
       <view class="asset-left flex-box dis-flex flex-x-around">
-        <view class="asset-left-item" @click="onTargetWallet">
+        <view class="asset-left-item" style="max-width: 200rpx;" @click="onTargetWallet">
           <view class="item-value dis-flex flex-x-center">
             <text>{{ isLogin ? assets.balance : '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
-            <text>账户余额</text>
+            <text class="oneline-hide">账户余额</text>
           </view>
         </view>
         <view class="asset-left-item" @click="onTargetPoints">
@@ -54,12 +54,12 @@
             <text>{{ isLogin ? assets.points : '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
-            <text>{{ setting[SettingKeyEnum.POINTS.value].points_name }}</text>
+            <text class="oneline-hide">{{ setting[SettingKeyEnum.POINTS.value].points_name }}</text>
           </view>
         </view>
         <view class="asset-left-item" @click="onTargetMyCoupon">
           <view class="item-value dis-flex flex-x-center">
-            <text>{{ isLogin ? assets.coupon : '--' }}</text>
+            <text class="oneline-hide">{{ isLogin ? assets.coupon : '--' }}</text>
           </view>
           <view class="item-name dis-flex flex-x-center">
             <text>优惠券</text>
@@ -513,9 +513,10 @@
     }
 
     .asset-left-item {
+      max-width: 183rpx;
       text-align: center;
       color: #666;
-      padding: 0 42rpx;
+      padding: 0 16rpx;
 
       .item-value {
         font-size: 34rpx;
