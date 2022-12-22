@@ -1066,8 +1066,8 @@
     position: fixed;
     left: var(--window-left);
     right: var(--window-right);
-    top: 0;
-    bottom: 0;
+    bottom: var(--window-bottom);
+    top: var(--window-top);
     z-index: 21;
     overflow: hidden;
 
@@ -1114,7 +1114,7 @@
       position: fixed;
       left: var(--window-left);
       right: var(--window-right);
-      bottom: 0;
+      bottom: var(--window-bottom);
       z-index: 99;
       border-radius: 10rpx 10rpx 0 0;
       background-color: #fff;
