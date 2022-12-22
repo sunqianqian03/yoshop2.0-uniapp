@@ -6,18 +6,13 @@ const api = {
 }
 
 // 图片上传
-export const image = (files) => {
+export const image = files => {
   // 文件上传大小, 2M
   const maxSize = 1024 * 1024 * 2
   // 执行上传
   return new Promise((resolve, reject) => {
     request.urlFileUpload({ files, maxSize })
-      .then(result => {
-        const fileIds = result.map(item => {
-          return item.data.fileInfo.file_id
-        })
-        resolve(fileIds, result)
-      })
+      .then(result => resolve(result.map(item => item.data.fileInfo.file_id), result))
       .catch(reject)
   })
 }

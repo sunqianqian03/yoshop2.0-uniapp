@@ -78,6 +78,12 @@
       }
     },
     {
+      "path": "pages/user/personal/index",
+      "style": {
+        "navigationBarTitleText": "个人信息"
+      }
+    },
+    {
       "path": "pages/article/index",
       "style": {
         "navigationBarTitleText": "资讯列表"

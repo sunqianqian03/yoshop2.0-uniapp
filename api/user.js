@@ -4,7 +4,8 @@ import request from '@/utils/request'
 const api = {
   userInfo: 'user/info',
   assets: 'user/assets',
-  bindMobile: 'user/bindMobile'
+  bindMobile: 'user/bindMobile',
+  personal: 'user/personal'
 }
 
 // 当前登录的用户信息
@@ -25,4 +26,9 @@ export const assets = (param, option) => {
 // 绑定手机号
 export const bindMobile = (data, option) => {
   return request.post(api.bindMobile, data, option)
+}
+
+// 修改个人信息（头像昵称）
+export const personal = (data, option) => {
+  return request.post(api.personal, data, option)
 }
