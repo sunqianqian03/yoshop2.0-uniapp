@@ -2,7 +2,7 @@
   <view class="primary">
     <!-- 一级分类(大图) 10 -->
     <view v-if="list.length > 0 && display == PageCategoryStyleEnum.ONE_LEVEL_BIG.value" class="cate-content">
-      <view class="cate-wrapper cate_style__10">
+      <view class="cate-wrapper cate_style__10 clearfix">
         <view class="cate-item" v-for="(item, index) in list" :key="index" @click="onTargetGoodsList(item.category_id)">
           <image v-if="item.image" class="image" mode="widthFix" :src="item.image.preview_url"></image>
         </view>
@@ -10,7 +10,7 @@
     </view>
     <!-- 一级分类(小图) 11 -->
     <view v-if="list.length > 0 && display == PageCategoryStyleEnum.ONE_LEVEL_SMALL.value" class="cate-content">
-      <view class="cate-wrapper cate_style__11">
+      <view class="cate-wrapper cate_style__11 clearfix">
         <view class="cate-item" v-for="(item, index) in list" :key="index" @click="onTargetGoodsList(item.category_id)">
           <image v-if="item.image" class="image" mode="widthFix" :src="item.image.preview_url"></image>
           <view class="cate-name">{{ item.name }}</view>
