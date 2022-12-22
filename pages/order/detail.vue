@@ -292,7 +292,7 @@
       // 获取当前订单信息
       this.getOrderDetail()
       // 注册全局事件订阅: 是否刷新当前订单数据
-      uni.$on('syncRefreshOrder', (val, isCur) => {
+      uni.$on('syncRefresh', (val, isCur) => {
         if (!isCur) {
           this.canReset = val
         }
@@ -320,7 +320,7 @@
             app.isLoading = false
           })
         // 相应全局事件订阅: 刷新上级页面数据
-        canReset && uni.$emit('syncRefreshOrder', true, true)
+        canReset && uni.$emit('syncRefresh', true, true)
       },
 
       // 复制指定内容

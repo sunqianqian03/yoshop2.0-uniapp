@@ -208,7 +208,7 @@
       // 初始化当前选中的标签
       this.initCurTab(options)
       // 注册全局事件订阅: 是否刷新订单列表
-      uni.$on('syncRefreshOrder', canReset => {
+      uni.$on('syncRefresh', canReset => {
         this.canReset = canReset
       })
     },
@@ -226,7 +226,7 @@
      */
     onUnload() {
       // 卸载全局事件订阅
-      uni.$off('syncRefreshOrder')
+      uni.$off('syncRefresh')
     },
 
     methods: {

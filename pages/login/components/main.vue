@@ -230,10 +230,10 @@
           .then(result => {
             // 显示登录成功
             app.$toast(result.message)
+            // 相应全局事件订阅: 刷新上级页面数据
+            uni.$emit('syncRefresh', true)
             // 跳转回原页面
-            setTimeout(() => {
-              app.onNavigateBack(1)
-            }, 2000)
+            setTimeout(() => app.onNavigateBack(1), 2000)
           })
           .catch(err => {
             // 跳转回原页面
