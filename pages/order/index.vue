@@ -1,11 +1,9 @@
 <template>
   <view class="container">
-    <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true }" @down="downCallback"
-      :up="upOption" @up="upCallback">
+    <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true }" @down="downCallback" :up="upOption" @up="upCallback">
 
       <!-- tab栏 -->
-      <u-tabs :list="tabs" :is-scroll="false" :current="curTab" active-color="#FA2209" :duration="0.2"
-        @change="onChangeTab" />
+      <u-tabs :list="tabs" :is-scroll="false" :current="curTab" active-color="#FA2209" :duration="0.2" @change="onChangeTab" />
 
       <!-- 订单列表 -->
       <view class="order-list">
@@ -61,8 +59,7 @@
               </block>
               <!-- 已支付进行中的订单 -->
               <block v-if="item.order_status != OrderStatusEnum.APPLY_CANCEL.value">
-                <block
-                  v-if="item.pay_status == PayStatusEnum.SUCCESS.value && item.delivery_status == DeliveryStatusEnum.NOT_DELIVERED.value">
+                <block v-if="item.pay_status == PayStatusEnum.SUCCESS.value && item.delivery_status == DeliveryStatusEnum.NOT_DELIVERED.value">
                   <view class="btn-item" @click="onCancel(item.order_id)">申请取消</view>
                 </block>
               </block>
@@ -73,8 +70,7 @@
                 <view class="btn-item active" @click="onPay(item.order_id)">去支付</view>
               </block>
               <!-- 确认收货 -->
-              <block
-                v-if="item.delivery_status == DeliveryStatusEnum.DELIVERED.value && item.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value">
+              <block v-if="item.delivery_status == DeliveryStatusEnum.DELIVERED.value && item.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value">
                 <view class="btn-item active" @click="onReceipt(item.order_id)">确认收货</view>
               </block>
               <!-- 订单评价 -->
@@ -198,7 +194,7 @@
             tip: '亲，暂无订单记录'
           }
         },
-        // 控制首次触发onShow事件时不刷新列表
+        // 控制onShow事件是否刷新订单列表
         canReset: false,
         // 支付方式弹窗
         showPayPopup: false
@@ -211,6 +207,10 @@
     onLoad(options) {
       // 初始化当前选中的标签
       this.initCurTab(options)
+      // 注册全局事件订阅: 是否刷新订单列表
+      uni.$on('syncRefreshOrder', canReset => {
+        this.canReset = canReset
+      })
     },
 
     /**
@@ -218,7 +218,15 @@
      */
     onShow() {
       this.canReset && this.onRefreshList()
-      // this.canReset = true
+      this.canReset = false
+    },
+
+    /**
+     * 生命周期函数--监听页面的卸载
+     */
+    onUnload() {
+      // 卸载全局事件订阅
+      uni.$off('syncRefreshOrder')
     },
 
     methods: {

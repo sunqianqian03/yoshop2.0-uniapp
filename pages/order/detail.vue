@@ -36,8 +36,7 @@
       <!-- 下一步操作 -->
       <view class="next-action" v-if="order.order_status == OrderStatusEnum.NORMAL.value">
         <view v-if="order.pay_status == PayStatusEnum.PENDING.value" class="action-btn" @click="onPay()">去支付</view>
-        <view v-if="order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value"
-          class="action-btn" @click="onReceipt(order.order_id)">确认收货</view>
+        <view v-if="order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.receipt_status == ReceiptStatusEnum.NOT_RECEIVED.value" class="action-btn" @click="onReceipt(order.order_id)">确认收货</view>
       </view>
     </view>
 
@@ -54,8 +53,7 @@
     </view>
 
     <!-- 物流信息 -->
-    <view v-if="order.delivery_type == DeliveryTypeEnum.EXPRESS.value && order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.express"
-      class="express i-card" @click="handleTargetExpress()">
+    <view v-if="order.delivery_type == DeliveryTypeEnum.EXPRESS.value && order.delivery_status == DeliveryStatusEnum.DELIVERED.value && order.express" class="express i-card" @click="handleTargetExpress()">
       <view class="main">
         <view class="info-item">
           <view class="item-lable">物流公司</view>
@@ -279,7 +277,9 @@
         // 当前设置
         setting: {},
         // 支付方式弹窗
-        showPayPopup: false
+        showPayPopup: false,
+        // 控制onShow事件是否刷新订单信息
+        canReset: false,
       }
     },
 
@@ -291,12 +291,26 @@
       this.orderId = orderId
       // 获取当前订单信息
       this.getOrderDetail()
+      // 注册全局事件订阅: 是否刷新当前订单数据
+      uni.$on('syncRefreshOrder', (val, isCur) => {
+        if (!isCur) {
+          this.canReset = val
+        }
+      })
+    },
+
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow() {
+      this.canReset && this.getOrderDetail()
+      this.canReset = false
     },
 
     methods: {
 
       // 获取当前订单信息
-      getOrderDetail() {
+      getOrderDetail(canReset = false) {
         const app = this
         app.isLoading = true
         OrderApi.detail(app.orderId)
@@ -305,6 +319,8 @@
             app.setting = result.data.setting
             app.isLoading = false
           })
+        // 相应全局事件订阅: 刷新上级页面数据
+        canReset && uni.$emit('syncRefreshOrder', true, true)
       },
 
       // 复制指定内容
@@ -346,7 +362,7 @@
                   // 显示成功信息
                   app.$toast(result.message)
                   // 刷新当前订单数据
-                  app.getOrderDetail()
+                  app.getOrderDetail(true)
                 })
             }
           }
@@ -366,7 +382,7 @@
                   // 显示成功信息
                   app.$success(result.message)
                   // 刷新当前订单数据
-                  app.getOrderDetail()
+                  app.getOrderDetail(true)
                 })
             }
           }
@@ -398,25 +414,17 @@
           wxPayment(result.data.payment)
             .then(() => {
               app.$success('支付成功')
-              setTimeout(() => {
-                app.getOrderDetail()
-              }, 1500)
+              setTimeout(() => app.getOrderDetail(true), 1500)
             })
-            .catch(err => {
-              app.$error('订单未支付')
-            })
-            .finally(() => {
-              app.disabled = false
-            })
+            .catch(err => app.$error('订单未支付'))
+            .finally(() => app.disabled = false)
         }
         // 余额支付
         if (result.data.pay_type == PayTypeEnum.BALANCE.value) {
           app.$success('支付成功')
           app.disabled = false
-          setTimeout(() => {
-            // 刷新当前订单数据
-            app.getOrderDetail()
-          }, 1500)
+          // 刷新当前订单数据
+          setTimeout(() => app.getOrderDetail(true), 1500)
         }
       },
 
