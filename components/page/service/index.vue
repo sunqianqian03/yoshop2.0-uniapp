@@ -82,6 +82,7 @@
     position: fixed;
     z-index: 999;
     right: calc(var(--window-right) + var(--right));
+    // 设置ios刘海屏底部横线安全区域
     bottom: calc(constant(safe-area-inset-bottom) + var(--window-bottom) + var(--bottom));
     bottom: calc(env(safe-area-inset-bottom) + var(--window-bottom) + var(--bottom));
 

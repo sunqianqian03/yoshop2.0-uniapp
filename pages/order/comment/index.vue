@@ -261,8 +261,9 @@
 
 <style lang="scss" scoped>
   .container {
-    padding-bottom: constant(env(safe-area-inset-bottom) + 130rpx);
-    padding-bottom: calc(env(safe-area-inset-bottom) + 130rpx);
+    // 设置ios刘海屏底部横线安全区域
+    padding-bottom: constant(env(safe-area-inset-bottom) + 140rpx);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 140rpx);
   }
 
   .goods-list {

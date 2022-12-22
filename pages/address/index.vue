@@ -188,8 +188,10 @@
 
 <style lang="scss" scoped>
   .addres-list {
-    padding-bottom: calc(constant(safe-area-inset-bottom) + 120rpx);
-    padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+    padding-top: 20rpx;
+    // 设置ios刘海屏底部横线安全区域
+    padding-bottom: calc(constant(safe-area-inset-bottom) + 140rpx);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 140rpx);
   }
 
   // 项目内容

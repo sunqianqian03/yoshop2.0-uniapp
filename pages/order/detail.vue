@@ -445,6 +445,7 @@
 </style>
 <style lang="scss" scoped>
   .container {
+    // 设置ios刘海屏底部横线安全区域
     padding-bottom: constant(env(safe-area-inset-bottom) + 106rpx + 6rpx);
     padding-bottom: calc(env(safe-area-inset-bottom) + 106rpx + 6rpx);
   }
