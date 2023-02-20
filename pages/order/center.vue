@@ -63,16 +63,10 @@
 
     methods: {
 
-      // 获取当前用户信息
+      // 获取当前用户信息（验证是否登录）
       getUserInfo() {
         const app = this
         UserApi.info()
-          .then(result => {
-            const userInfo = result.data.userInfo
-            app.avatarUrl = userInfo.avatar_url
-            app.form.avatarId = userInfo.avatar_id
-            app.form.nickName = userInfo.nick_name
-          })
       },
 
     }
