@@ -158,6 +158,7 @@
     { id: 'contact', name: '在线客服', icon: 'kefu', type: 'button', openType: 'contact' },
     { id: 'points', name: '我的积分', icon: 'jifen', type: 'link', url: 'pages/points/log' },
     { id: 'refund', name: '退换/售后', icon: 'shouhou', type: 'link', url: 'pages/refund/index', count: 0 },
+    { id: 'orderCenter', name: '订单中心', icon: 'order-c', type: 'link', url: 'pages/order/center' },
   ]
 
   export default {

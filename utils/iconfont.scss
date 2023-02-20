@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2282770 */
-  src: url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.woff2?t=1673233477801') format('woff2'),
-       url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.woff?t=1673233477801') format('woff'),
-       url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.ttf?t=1673233477801') format('truetype'),
-       url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.svg?t=1673233477801#iconfont') format('svg');
+  src: url('https://at.alicdn.com/t/c/font_2282770_14425t4oa60f.woff2?t=1673327595201') format('woff2'),
+       url('https://at.alicdn.com/t/c/font_2282770_14425t4oa60f.woff?t=1673327595201') format('woff'),
+       url('https://at.alicdn.com/t/c/font_2282770_14425t4oa60f.ttf?t=1673327595201') format('truetype'),
+       url('https://at.alicdn.com/t/c/font_2282770_14425t4oa60f.svg?t=1673327595201#iconfont') format('svg');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-order-c:before {
+  content: "\e653";
 }
 
 .icon-shouye2:before {
