@@ -161,6 +161,5 @@
     left: var(--window-left);
     right: var(--window-right);
     z-index: 9;
-    padding-bottom: 20rpx;
   }
 </style>

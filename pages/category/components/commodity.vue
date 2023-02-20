@@ -1,14 +1,28 @@
 <template>
-  <view class="container">
+  <view class="container" :style="appThemeStyle">
     <!-- 一级分类 -->
-    <scroll-view class="cate-left" :scroll-y="true" :style="{ height: `${scrollHeight}px` }">
+    <scroll-view class="cate-left" :scroll-y="true" :style="{ height: `${scrollHeight}px` }" @touchmove.stop.prevent>
       <text class="type-nav" :class="{ selected: curIndex == -1 }" @click="handleSelectNav(-1)">全部</text>
-      <text class="type-nav" :class="{ selected: curIndex == index }" v-for="(item, index) in list" :key="index"
-        @click="handleSelectNav(index)">{{ item.name }}</text>
+      <text class="type-nav" :class="{ selected: curIndex == index }" v-for="(item, index) in list" :key="index" @click="handleSelectNav(index)">{{ item.name }}</text>
     </scroll-view>
 
     <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ use: false }" :up="upOption" :bottombar="false" @up="upCallback">
+
       <view class="cate-content">
+
+        <!-- 子分类 -->
+        <view v-if="subCateList.length" class="sub-cate-list clearfix" :class="{ 'display-fold': !showSubCate }" @touchmove.stop.prevent>
+          <view class="nav-icon" @click="handleShowSubCate">
+            <text class="iconfont" :class="[ showSubCate ? 'icon-arrow-up' : 'icon-arrow-down' ]"></text>
+          </view>
+          <view class="sub-cate-item" :class="{ selected: curIndex2 == -1 }" @click="handleSelectSubCate(-1)">
+            <text>全部</text>
+          </view>
+          <view class="sub-cate-item" v-for="(item, index) in subCateList" :key="index" :class="{ selected: curIndex2 == index }" @click="handleSelectSubCate(index)">
+            <text>{{ item.name }}</text>
+          </view>
+        </view>
+
         <!-- 商品列表 -->
         <view class="goods-list">
           <view class="goods-item--container" v-for="(item, index) in goodsList.data" :key="index">
@@ -36,8 +50,11 @@
             </view>
           </view>
         </view>
+        <!-- 遮罩层 -->
+        <view class="mask" v-show="showSubCate" @touchmove.stop.prevent @click="handleShowSubCate"></view>
         <!-- 加入购物车组件 -->
         <AddCartPopup ref="AddCartPopup" @addCart="onUpdateCartTabBadge" />
+
       </view>
     </mescroll-body>
   </view>
@@ -84,6 +101,10 @@
         scrollHeight: 0,
         // 一级分类：指针
         curIndex: -1,
+        // 是否显示子分类
+        showSubCate: false,
+        // 二级分类：指针
+        curIndex2: -1,
         // 商品列表
         goodsList: getEmptyPaginateObj(),
         // 上拉加载配置
@@ -102,6 +123,15 @@
     created() {
       // 设置分类列表高度
       this.setListHeight()
+    },
+    computed: {
+      // 二级分类列表
+      subCateList() {
+        if (this.list[this.curIndex] && this.list[this.curIndex].children) {
+          return this.list[this.curIndex].children
+        }
+        return []
+      }
     },
     methods: {
 
@@ -128,7 +158,7 @@
        */
       getGoodsList(pageNo = 1) {
         const app = this
-        const categoryId = app.curIndex > -1 ? app.list[app.curIndex].category_id : 0
+        const categoryId = app.getCategoryId()
         return new Promise((resolve, reject) => {
           GoodsApi.list({ categoryId, page: pageNo }, { load: false })
             .then(result => {
@@ -141,15 +171,33 @@
         })
       },
 
+      // 获取当前选择的分类ID
+      getCategoryId() {
+        const app = this
+        if (app.curIndex2 > -1) {
+          return app.subCateList[app.curIndex2].category_id
+        }
+        return app.curIndex > -1 ? app.list[app.curIndex].category_id : 0
+      },
+
       // 设置列表内容的高度
       setListHeight() {
         const { windowHeight } = uni.getSystemInfoSync()
-        this.scrollHeight = windowHeight - rpx2px(96)
+        this.scrollHeight = windowHeight - rpx2px(88)
       },
 
       // 一级分类：选中分类
       handleSelectNav(index) {
         this.curIndex = index
+        this.onRefreshList()
+        this.showSubCate = false
+        this.curIndex2 = -1
+      },
+
+      // 二级分类：选中分类
+      handleSelectSubCate(index) {
+        this.curIndex2 = index
+        this.showSubCate = false
         this.onRefreshList()
       },
 
@@ -175,6 +223,11 @@
         setCartTabBadge()
       },
 
+      // 切换子分类显示状态
+      handleShowSubCate() {
+        this.showSubCate = !this.showSubCate
+      }
+
     }
   }
 </script>
@@ -188,20 +241,20 @@
   .cate-content {
     z-index: 1;
     background: #fff;
-    padding-top: 96rpx;
+    padding-top: 88rpx;
+    min-height: 300rpx;
   }
 
   // 一级分类+二级分类 20
   .cate-left {
+    position: fixed;
+    top: calc(88rpx + var(--window-top));
+    left: var(--window-left);
+    bottom: var(--window-bottom);
     width: 173rpx;
     height: 100%;
     background: #f8f8f8;
     color: #444;
-
-    position: fixed;
-    top: calc(96rpx + var(--window-top));
-    left: var(--window-left);
-    bottom: var(--window-bottom);
   }
 
   // 左侧一级分类
@@ -217,15 +270,16 @@
 
     &.selected {
       background: #fff;
-      color: #fa2209;
       border-right: none;
       font-size: 28rpx;
+      color: $main-bg
     }
   }
 
   // 商品列表
   .goods-list {
     background: #fff;
+    position: relative;
   }
 
   .goods-item {
@@ -276,16 +330,12 @@
       bottom: 0rpx;
       min-height: 44rpx;
 
-      .item-status {
-        color: #ff1d1c;
-      }
-
       .item-prices {
         padding-right: 6rpx;
 
         .price_x {
           margin-right: 14rpx;
-          color: rgb(240, 60, 60);
+          color: $main-bg;
           font-size: 28rpx;
         }
 
@@ -297,5 +347,56 @@
       }
 
     }
+  }
+
+
+  // 子分类
+  .sub-cate-list {
+    background-color: #fff;
+    width: 100%;
+    z-index: 9;
+    padding: 8rpx 40rpx 0 14rpx;
+    overflow: hidden;
+    position: sticky;
+    top: calc(88rpx + var(--window-top));
+
+    &.display-fold {
+      height: 86rpx;
+    }
+
+    .nav-icon {
+      position: absolute;
+      right: 16rpx;
+      top: 12rpx;
+      font-size: 32rpx;
+    }
+
+    .sub-cate-item {
+      float: left;
+      background: #f8f8f8;
+      padding: 10rpx 30rpx;
+      margin-right: 22rpx;
+      margin-bottom: 24rpx;
+      font-size: 26rpx;
+      border-radius: 14rpx;
+      border: 1rpx solid #f8f8f8;
+
+      &.selected {
+        color: $main-bg;
+        border: 1rpx solid $main-bg;
+      }
+    }
+  }
+
+  // 子分类遮罩层
+  .mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 8;
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease-in-out 0s;
   }
 </style>
