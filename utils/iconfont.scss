@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2282770 */
-  src: url('https://at.alicdn.com/t/font_2282770_p9nx0bv86i.woff2?t=1649761463203') format('woff2'),
-       url('https://at.alicdn.com/t/font_2282770_p9nx0bv86i.woff?t=1649761463203') format('woff'),
-       url('https://at.alicdn.com/t/font_2282770_p9nx0bv86i.ttf?t=1649761463203') format('truetype'),
-       url('https://at.alicdn.com/t/font_2282770_p9nx0bv86i.svg?t=1649761463203#iconfont') format('svg');
+  src: url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.woff2?t=1673233477801') format('woff2'),
+       url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.woff?t=1673233477801') format('woff'),
+       url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.ttf?t=1673233477801') format('truetype'),
+       url('https://at.alicdn.com/t/c/font_2282770_ppelmhipjad.svg?t=1673233477801#iconfont') format('svg');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shouye2:before {
+  content: "\e60d";
 }
 
 .icon-jiagou3:before {

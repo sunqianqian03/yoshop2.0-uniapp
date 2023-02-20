@@ -187,6 +187,13 @@
       }
     },
     {
+      "path": "pages/order/center",
+      "style": {
+        "navigationBarTitleText": "订单中心",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
       "path": "pages/order/index",
       "style": {
         "navigationBarTitleText": "我的订单",

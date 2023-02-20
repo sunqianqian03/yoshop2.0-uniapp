@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="container" :style="appThemeStyle">
     <!-- 标题 -->
     <view class="page-title">收货地址</view>
     <!-- 表单组件 -->
@@ -12,7 +12,7 @@
           <u-input v-model="form.phone" placeholder="请输入收货人手机号" />
         </u-form-item>
         <u-form-item label="地区" prop="region">
-          <select-region v-model="form.region" />
+          <select-region ref="sRegion" v-model="form.region" />
         </u-form-item>
         <u-form-item label="详细地址" prop="detail" :border-bottom="false">
           <u-input v-model="form.detail" placeholder="街道门牌、楼层等信息" />
@@ -22,6 +22,9 @@
     <!-- 操作按钮 -->
     <view class="footer">
       <view class="btn-wrapper">
+        <!-- #ifdef MP-WEIXIN -->
+        <view class="btn-item btn-item-wechat" @click="chooseAddress()">选择微信收货地址</view>
+        <!-- #endif -->
         <view class="btn-item btn-item-main" :class="{ disabled }" @click="handleSubmit()">保存</view>
       </view>
     </view>
@@ -100,6 +103,27 @@
 
     methods: {
 
+      // 选择微信地址
+      // #ifdef MP-WEIXIN
+      chooseAddress() {
+        const app = this
+        const { form, $refs } = this
+        uni.chooseAddress({
+          success(res) {
+            const names = $refs.sRegion.getOptionItemByNames(res)
+            form.name = res.userName
+            form.phone = res.telNumber
+            form.detail = res.detailInfo
+            form.region = names.length > 0 ? names : []
+          },
+          fail({ errMsg }) {
+            app.$toast(errMsg)
+            console.error('获取微信地址失败：', errMsg)
+          }
+        })
+      },
+      // #endif
+
       // 表单提交
       handleSubmit() {
         const app = this
@@ -146,34 +170,40 @@
     background: #fff;
   }
 
-  /* 底部操作栏 */
-
+  // 底部操作栏
   .footer {
-    margin-top: 60rpx;
+    margin-top: 80rpx;
 
     .btn-wrapper {
       height: 100%;
-      display: flex;
-      align-items: center;
+      // display: flex;
+      // align-items: center;
       padding: 0 20rpx;
     }
 
     .btn-item {
       flex: 1;
       font-size: 28rpx;
-      height: 100rpx;
-      line-height: 100rpx;
-      text-align: center;
+      height: 86rpx;
       color: #fff;
       border-radius: 50rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-item-wechat {
+      background: #0ba90b;
+      margin-bottom: 26rpx;
     }
 
     .btn-item-main {
-      background: linear-gradient(to right, #f9211c, #ff6335);
+      background: linear-gradient(to right, $main-bg, $main-bg2);
+      color: $main-text;
 
       // 禁用按钮
       &.disabled {
-        background: #ff9779;
+        opacity: 0.6;
       }
     }
 
