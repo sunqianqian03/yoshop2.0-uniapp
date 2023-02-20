@@ -1,5 +1,5 @@
 <template>
-  <view class="container" :style="appThemeStyle">
+  <view class="container">
     <!-- 一级分类 -->
     <scroll-view class="cate-left" :scroll-y="true" :style="{ height: `${scrollHeight}px` }" @touchmove.stop.prevent>
       <text class="type-nav" :class="{ selected: curIndex == -1 }" @click="handleSelectNav(-1)">全部</text>
@@ -272,7 +272,7 @@
       background: #fff;
       border-right: none;
       font-size: 28rpx;
-      color: $main-bg
+      color: #fa2209;
     }
   }
 
@@ -335,7 +335,7 @@
 
         .price_x {
           margin-right: 14rpx;
-          color: $main-bg;
+          color: rgb(240, 60, 60);
           font-size: 28rpx;
         }
 
@@ -382,8 +382,8 @@
       border: 1rpx solid #f8f8f8;
 
       &.selected {
-        color: $main-bg;
-        border: 1rpx solid $main-bg;
+        color: #fa2209;
+        border: 1rpx solid #fa2209;
       }
     }
   }

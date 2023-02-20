@@ -1,5 +1,5 @@
 <template>
-  <view class="container" :style="appThemeStyle">
+  <view class="container">
     <!-- 订单页列表 -->
     <view class="order-list">
       <view class="order-item" v-for="(item, index) in orderList" :key="index" @click="$navTo(item.path)">

@@ -1,5 +1,5 @@
 <template>
-  <view class="container" :style="appThemeStyle">
+  <view class="container">
     <!-- 标题 -->
     <view class="page-title">收货地址</view>
     <!-- 表单组件 -->
@@ -22,9 +22,6 @@
     <!-- 操作按钮 -->
     <view class="footer">
       <view class="btn-wrapper">
-        <!-- #ifdef MP-WEIXIN -->
-        <view class="btn-item btn-item-wechat" @click="chooseAddress()">选择微信收货地址</view>
-        <!-- #endif -->
         <view class="btn-item btn-item-main" :class="{ disabled }" @click="handleSubmit()">保存</view>
       </view>
     </view>
@@ -103,27 +100,6 @@
 
     methods: {
 
-      // 选择微信地址
-      // #ifdef MP-WEIXIN
-      chooseAddress() {
-        const app = this
-        const { form, $refs } = this
-        uni.chooseAddress({
-          success(res) {
-            const names = $refs.sRegion.getOptionItemByNames(res)
-            form.name = res.userName
-            form.phone = res.telNumber
-            form.detail = res.detailInfo
-            form.region = names.length > 0 ? names : []
-          },
-          fail({ errMsg }) {
-            app.$toast(errMsg)
-            console.error('获取微信地址失败：', errMsg)
-          }
-        })
-      },
-      // #endif
-
       // 表单提交
       handleSubmit() {
         const app = this
@@ -198,8 +174,8 @@
     }
 
     .btn-item-main {
-      background: linear-gradient(to right, $main-bg, $main-bg2);
-      color: $main-text;
+      background: linear-gradient(to right, #f9211c, #ff6335);
+      color: #fff;
 
       // 禁用按钮
       &.disabled {
