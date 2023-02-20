@@ -1,8 +1,7 @@
 <template>
   <!-- 微信授权手机号一键登录 -->
   <view class="wechat-auth">
-    <button class="btn-normal" open-type="getPhoneNumber" @getphonenumber="handelMpWeixinMobileLogin($event)"
-      @click="clickPhoneNumber">
+    <button class="btn-normal" open-type="getPhoneNumber" @getphonenumber="handelMpWeixinMobileLogin($event)" @click="clickPhoneNumber">
       <view class="wechat-auth-container">
         <image class="icon" src="../../../static/channel/wechat.png"></image>
         <text class="title">微信手机号一键登录</text>
@@ -66,10 +65,10 @@
           .then(result => {
             // 显示登录成功
             app.$toast(result.message)
+            // 相应全局事件订阅: 刷新上级页面数据
+            uni.$emit('syncRefresh', true)
             // 跳转回原页面
-            setTimeout(() => {
-              app.onNavigateBack(1)
-            }, 2000)
+            setTimeout(() => app.onNavigateBack(1), 2000)
           })
           .catch(err => {
             const resultData = err.result.data

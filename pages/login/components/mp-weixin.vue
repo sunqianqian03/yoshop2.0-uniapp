@@ -3,8 +3,7 @@
     <view class="wechatapp">
       <view class="header">
         <!-- <open-data class="avatar" type="userAvatarUrl"></open-data> -->
-        <image class="image"
-          :src="storeInfo && storeInfo.image_url ? storeInfo.image_url : '/static/default-avatar.png'"></image>
+        <image class="image" :src="storeInfo && storeInfo.image_url ? storeInfo.image_url : '/static/default-avatar.png'"></image>
       </view>
     </view>
     <view class="auth-title">申请获取以下权限</view>
@@ -102,10 +101,10 @@
           .then(result => {
             // 一键登录成功
             app.$toast(result.message)
+            // 相应全局事件订阅: 刷新上级页面数据
+            uni.$emit('syncRefresh', true)
             // 跳转回原页面
-            setTimeout(() => {
-              app.onNavigateBack()
-            }, 2000)
+            setTimeout(() => app.onNavigateBack(), 2000)
           })
           .catch(err => {
             const resultData = err.result.data
