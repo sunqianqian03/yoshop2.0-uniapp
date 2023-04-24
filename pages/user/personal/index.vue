@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="container" :style="appThemeStyle">
     <!-- 标题 -->
     <view class="page-title">个人信息</view>
     <!-- 表单组件 -->
@@ -11,7 +11,8 @@
           </button>
         </u-form-item>
         <u-form-item label="昵称" prop="nickName">
-          <u-input v-model="form.nickName" type="nickname" maxlength="12" placeholder="请输入昵称" @input="onInputNickName" @blur="onInputNickName" />
+          <u-input v-model="form.nickName" type="nickname" maxlength="12" placeholder="请输入昵称" @input="onInputNickName"
+            @blur="onInputNickName" />
         </u-form-item>
       </u-form>
     </view>
@@ -127,6 +128,11 @@
           .then(fileIds => {
             app.form.avatarId = fileIds[0]
             app.tempFile = null
+            return true
+          })
+          .catch(() => {
+            app.disabled = false
+            return false
           })
       },
 
@@ -136,24 +142,23 @@
         // 判断是否重复提交
         if (app.disabled === true) return
         app.$refs.uForm.validate(async valid => {
-          if (valid) {
-            // 按钮禁用
-            app.disabled = true
-            // 先上传头像图片
-            if (app.tempFile) {
-              await app.uploadFile()
-            }
-            // 提交保存个人信息
-            UserApi.personal({ form: app.form })
-              .then(result => {
-                app.$toast(result.message)
-                setTimeout(() => {
-                  app.disabled = false
-                  uni.navigateBack()
-                }, 1500)
-              })
-              .catch(err => app.disabled = false)
+          if (!valid) return
+          // 按钮禁用
+          app.disabled = true
+          // 先上传头像图片
+          if (app.tempFile && !await app.uploadFile()) {
+            return
           }
+          // 提交保存个人信息
+          UserApi.personal({ form: app.form })
+            .then(result => {
+              app.$toast(result.message)
+              setTimeout(() => {
+                app.disabled = false
+                uni.navigateBack()
+              }, 1500)
+            })
+            .catch(err => app.disabled = false)
         })
       },
 
