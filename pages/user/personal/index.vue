@@ -11,7 +11,7 @@
           </button>
         </u-form-item>
         <u-form-item label="昵称" prop="nickName">
-          <u-input v-model="form.nickName" type="nickname" maxlength="12" placeholder="请输入昵称" @input="onInputNickName"
+          <u-input v-model="form.nickName" type="nickname" maxlength="30" placeholder="请输入昵称" @input="onInputNickName"
             @blur="onInputNickName" />
         </u-form-item>
       </u-form>
