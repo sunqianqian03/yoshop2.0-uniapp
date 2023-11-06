@@ -52,9 +52,8 @@
       async setShowUserInfo() {
         console.log('setShowUserInfo start')
         const app = this
-        // 判断当前客户端是微信小程序, 并且支持getUserProfile接口
-        const isMpWeixin = app.platform === 'MP-WEIXIN' && wx.canIUse('getUserProfile')
-
+        // 判断当前客户端是微信小程序
+        const isMpWeixin = app.platform === 'MP-WEIXIN'
         // 获取后台设置
         await SettingModel.item(SettingKeyEnum.REGISTER.value, false)
           .then(setting => {
