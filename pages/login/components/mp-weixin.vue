@@ -10,7 +10,7 @@
     <view class="auth-subtitle">获得你的公开信息（昵称、头像等）</view>
     <view class="login-btn">
       <!-- 获取微信用户信息 -->
-      <button class="button btn-normal" @click="getUserProfile()">授权登录</button>
+      <button class="button btn-normal" @click="handleLogin()">一键登录</button>
     </view>
     <view class="no-login-btn">
       <button class="button btn-normal" @click="handleCancel()">暂不登录</button>
@@ -62,27 +62,9 @@
         })
       },
 
-      // // 获取微信用户信息 (已废弃)
-      // getUserProfile() {
-      //   const app = this
-      //   wx.canIUse('getUserProfile') && wx.getUserProfile({
-      //     lang: 'zh_CN',
-      //     desc: '获取用户相关信息',
-      //     success({ userInfo }) {
-      //       console.log('用户同意了授权')
-      //       console.log('userInfo：', userInfo)
-      //       // 授权成功事件
-      //       app.onAuthSuccess(userInfo)
-      //     },
-      //     fail() {
-      //       console.log('用户拒绝了授权')
-      //     }
-      //   })
-      // },
-
-      // 获取微信用户信息 (弃用getUserProfile)
-      getUserProfile() {
-        this.onAuthSuccess({ nickName: '微信用户', avatarUrl: '' })
+      // 一键登录按钮点击事件
+      handleLogin() {
+        this.onAuthSuccess({})
       },
 
       // 授权成功事件
