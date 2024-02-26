@@ -6,7 +6,7 @@
       <!-- 主图视频 -->
       <swiper-item v-if="video">
         <view class="slide-video">
-          <video id="myVideo" class="video" :poster="videoCover.preview_url" :src="video.external_url" controls x5-playsinline playsinline
+          <video id="myVideo" class="video" :poster="videoCover ? videoCover.preview_url : ''" :src="video.external_url" controls x5-playsinline playsinline
             x5-video-player-type="h5" x5-video-player-fullscreen x5-video-orientation="portrait" :enable-progress-gesture="false"
             @play="onVideoPlay"></video>
         </view>
