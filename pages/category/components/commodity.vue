@@ -3,10 +3,12 @@
     <!-- 一级分类 -->
     <scroll-view class="cate-left" :scroll-y="true" @touchmove.stop.prevent>
       <text class="type-nav" :class="{ selected: curIndex == -1 }" @click="handleSelectNav(-1)">全部</text>
-      <text class="type-nav" :class="{ selected: curIndex == index }" v-for="(item, index) in list" :key="index" @click="handleSelectNav(index)">{{ item.name }}</text>
+      <text class="type-nav" :class="{ selected: curIndex == index }" v-for="(item, index) in list" :key="index"
+        @click="handleSelectNav(index)">{{ item.name }}</text>
     </scroll-view>
 
-    <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ use: false }" :up="upOption" :bottombar="false" @up="upCallback">
+    <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ use: false }" :up="upOption" :bottombar="false"
+      @up="upCallback">
 
       <view class="cate-content">
 
@@ -18,7 +20,8 @@
           <view class="sub-cate-item" :class="{ selected: curIndex2 == -1 }" @click="handleSelectSubCate(-1)">
             <text>全部</text>
           </view>
-          <view class="sub-cate-item" v-for="(item, index) in subCateList" :key="index" :class="{ selected: curIndex2 == index }" @click="handleSelectSubCate(index)">
+          <view class="sub-cate-item" v-for="(item, index) in subCateList" :key="index" :class="{ selected: curIndex2 == index }"
+            @click="handleSelectSubCate(index)">
             <text>{{ item.name }}</text>
           </view>
         </view>
@@ -225,7 +228,7 @@
   .cate-content {
     z-index: 1;
     background: #fff;
-    padding-top: 88rpx;
+    padding-top: 90rpx;
     min-height: 300rpx;
   }
 
@@ -236,7 +239,7 @@
     left: var(--window-left);
     bottom: var(--window-bottom);
     width: 173rpx;
-    height: calc(100% - var(--window-bottom) - 88rpx); 
+    height: calc(100% - var(--window-top) - var(--window-bottom) - 90rpx) !important; 
     background: #f8f8f8;
     color: #444;
   }

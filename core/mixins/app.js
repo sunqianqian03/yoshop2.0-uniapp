@@ -29,12 +29,17 @@ export default {
     appThemeStyle: () => appTheme2Str(store.getters.appTheme)
   },
   mounted() {
+    // #ifdef H5
+    // 微信公众号端隐藏 navigationBar  (解决双标题栏问题)
     if (this.platform === 'WXOFFICIAL') {
-      // this.navTitle()
+      this.hideNavigationBar()
     }
+    // #endif
   },
   methods: {
-    navTitle() {
+    // #ifdef H5
+    // 隐藏 navigationBar
+    hideNavigationBar() {
       this.$nextTick(() => {
         const navTitleDom = document.getElementsByTagName('uni-page-head')
         if (navTitleDom.length) {
@@ -43,5 +48,6 @@ export default {
         }
       })
     }
+    // #endif
   }
 }

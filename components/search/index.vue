@@ -33,7 +33,8 @@
 <style lang="scss" scoped>
   .search-wrapper {
     background: #fff;
-    padding: 13rpx;
+    padding: 14rpx;
+    height: 90rpx;
   }
 
   .index-search {
