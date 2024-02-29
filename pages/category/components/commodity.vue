@@ -66,10 +66,8 @@
 <script>
   import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins'
   import { getEmptyPaginateObj, getMoreListData, setCartTabBadge } from '@/core/app'
-  import { PageCategoryStyleEnum } from '@/common/enum/store/page/category'
   import AddCartBtn from '@/components/add-cart-btn'
   import AddCartPopup from '@/components/add-cart-popup'
-  import { rpx2px } from '@/utils/util'
   import * as GoodsApi from '@/api/goods'
 
   const pageSize = 15
@@ -94,8 +92,6 @@
     },
     data() {
       return {
-        // 枚举类
-        PageCategoryStyleEnum,
         // 一级分类：指针
         curIndex: -1,
         // 是否显示子分类
