@@ -4,7 +4,7 @@
     <button class="btn-normal" open-type="getPhoneNumber" @getphonenumber="handelMpWeixinMobileLogin($event)" @click="clickPhoneNumber">
       <view class="wechat-auth-container">
         <image class="icon" src="../../../static/channel/wechat.png"></image>
-        <text class="title">微信手机号一键登录</text>
+        <text class="title">手机号快捷登录</text>
       </view>
     </button>
   </view>
