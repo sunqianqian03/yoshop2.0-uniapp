@@ -372,18 +372,14 @@
 
       .goods-props {
         margin-top: 14rpx;
-        height: 40rpx;
         color: #ababab;
         font-size: 24rpx;
         overflow: hidden;
 
         .goods-props-item {
-          display: inline-block;
-          margin-right: 14rpx;
           padding: 4rpx 16rpx;
           border-radius: 12rpx;
-          background-color: #F5F5F5;
-          width: auto;
+          background-color: #fcfcfc;
         }
       }
 
