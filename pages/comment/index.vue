@@ -2,7 +2,7 @@
   <view class="container" :style="appThemeStyle">
     <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ use: false }" :up="upOption" @up="upCallback">
       <!-- tab栏 -->
-      <u-tabs :list="tabs" :is-scroll="false" :current="curTab" :active-color="appTheme.mainBg" :duration="0.2" @change="onChangeTab" />
+      <u-tabs :list="tabs" :is-scroll="false" v-model="curTab" :active-color="appTheme.mainBg" :duration="0.2" @change="onChangeTab" />
       <!-- 商品评价列表 -->
       <view class="comment-list">
         <view class="comment-item" v-for="(item, index) in list.data" :key="index">

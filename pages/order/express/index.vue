@@ -2,7 +2,7 @@
   <view v-if="!isLoading && express.length" class="container">
 
     <!-- 标签栏 -->
-    <u-tabs v-if="tabs.length > 1" :list="tabs" :isScroll="true" :current="curTab" :active-color="appTheme.mainBg" :duration="0.2" bar-width="60"
+    <u-tabs v-if="tabs.length > 1" :list="tabs" :isScroll="true" v-model="curTab" :active-color="appTheme.mainBg" :duration="0.2" bar-width="60"
       @change="onChangeTab"></u-tabs>
 
     <!-- 商品列表 -->

@@ -3,7 +3,7 @@
     <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ use: false }" :up="upOption" @up="upCallback">
 
       <!-- tab栏 -->
-      <u-tabs :list="tabList" :is-scroll="true" :current="curTab" :active-color="appTheme.mainBg" :duration="0.2" @change="onChangeTab" />
+      <u-tabs :list="tabList" :is-scroll="true" v-model="curTab" :active-color="appTheme.mainBg" :duration="0.2" @change="onChangeTab" />
 
       <!-- 文章列表 -->
       <view class="article-list">

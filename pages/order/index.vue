@@ -3,7 +3,7 @@
     <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ native: true }" @down="downCallback" :up="upOption"
       @up="upCallback">
       <!-- tab栏 -->
-      <u-tabs :list="tabs" :is-scroll="false" :current="curTab" :active-color="appTheme.mainBg" :duration="0.2" @change="onChangeTab" />
+      <u-tabs :list="tabs" :is-scroll="false" v-model="curTab" :active-color="appTheme.mainBg" :duration="0.2" @change="onChangeTab" />
       <!-- 订单列表 -->
       <view class="order-list">
         <view class="order-item" v-for="(item, index) in list.data" :key="index">

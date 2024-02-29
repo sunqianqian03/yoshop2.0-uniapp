@@ -4,7 +4,7 @@
       @up="upCallback">
 
       <!-- tab栏 -->
-      <u-tabs :list="tabs" :is-scroll="false" :current="curTab" :active-color="appTheme.mainBg" :duration="0.2"
+      <u-tabs :list="tabs" :is-scroll="false" v-model="curTab" :active-color="appTheme.mainBg" :duration="0.2"
         @change="onChangeTab" />
 
       <!-- 优惠券列表 -->
