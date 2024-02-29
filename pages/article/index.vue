@@ -1,10 +1,8 @@
 <template>
   <view class="container" :style="appThemeStyle">
     <mescroll-body ref="mescrollRef" :sticky="true" @init="mescrollInit" :down="{ use: false }" :up="upOption" @up="upCallback">
-
       <!-- tab栏 -->
       <u-tabs :list="tabList" :is-scroll="true" v-model="curTab" :active-color="appTheme.mainBg" :duration="0.2" @change="onChangeTab" />
-
       <!-- 文章列表 -->
       <view class="article-list">
         <view class="article-item" :class="[`show-type__${item.show_type}`]" v-for="(item, index) in articleList.data" :key="index"
@@ -57,6 +55,8 @@
         tabList: [],
         // 当前选项
         curTab: 0,
+        // 当前文章分类ID
+        categoryId: 0,
         // 文章列表
         articleList: getEmptyPaginateObj(),
         // 上拉加载配置
@@ -76,8 +76,10 @@
      */
     onLoad(options) {
       const app = this
+      // 记录文章分类ID
+      app.categoryId = options.categoryId || 0
       // 获取文章分类数据
-      app.getCategoryList(options.categoryId)
+      app.getCategoryList()
     },
 
     methods: {
@@ -100,21 +102,21 @@
       },
 
       // 获取文章分类数据
-      getCategoryList(categoryId) {
+      getCategoryList() {
         CategoryApi.list().then(result => {
-          this.setTabList(result.data.list, categoryId)
+          this.setTabList(result.data.list)
         })
       },
 
       // 设置选项卡数据
-      setTabList(categoryList, categoryId) {
+      setTabList(categoryList) {
         const app = this
         app.tabList = [{ value: 0, name: '全部' }]
         categoryList.forEach(item => {
           app.tabList.push({ value: item.category_id, name: item.name })
         })
-        if (categoryId > 0) {
-          const findIndex = app.tabList.findIndex(item => item.value == categoryId)
+        if (app.categoryId > 0) {
+          const findIndex = app.tabList.findIndex(item => item.value == app.categoryId)
           app.curTab = findIndex > -1 ? findIndex : 0
         }
       },
@@ -126,7 +128,7 @@
       getArticleList(pageNo = 1) {
         const app = this
         return new Promise((resolve, reject) => {
-          ArticleApi.list({ categoryId: app.getTabValue(), page: pageNo }, { load: false })
+          ArticleApi.list({ categoryId: app.categoryId, page: pageNo }, { load: false })
             .then(result => {
               // 合并新数据
               const newList = result.data.list
@@ -141,14 +143,9 @@
       onChangeTab(index) {
         // 设置当前选中的标签
         this.curTab = index
+        this.categoryId = this.tabList[index].value
         // 刷新订单列表
         this.onRefreshList()
-      },
-
-      // 获取当前标签项的值
-      getTabValue() {
-        const app = this
-        return app.tabList.length ? app.tabList[app.curTab].value : 0
       },
 
       // 刷新列表数据
