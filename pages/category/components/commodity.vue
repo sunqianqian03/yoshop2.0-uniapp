@@ -1,7 +1,7 @@
 <template>
   <view class="container" :style="appThemeStyle">
     <!-- 一级分类 -->
-    <scroll-view class="cate-left" :scroll-y="true" :style="{ height: `${scrollHeight}px` }" @touchmove.stop.prevent>
+    <scroll-view class="cate-left" :scroll-y="true" @touchmove.stop.prevent>
       <text class="type-nav" :class="{ selected: curIndex == -1 }" @click="handleSelectNav(-1)">全部</text>
       <text class="type-nav" :class="{ selected: curIndex == index }" v-for="(item, index) in list" :key="index" @click="handleSelectNav(index)">{{ item.name }}</text>
     </scroll-view>
@@ -93,8 +93,6 @@
       return {
         // 枚举类
         PageCategoryStyleEnum,
-        // 列表高度
-        scrollHeight: 0,
         // 一级分类：指针
         curIndex: -1,
         // 是否显示子分类
@@ -115,10 +113,6 @@
           toTop: { right: 30, bottom: 48, zIndex: 9 }
         }
       }
-    },
-    created() {
-      // 设置分类列表高度
-      this.setListHeight()
     },
     computed: {
       // 二级分类列表
@@ -174,12 +168,6 @@
           return app.subCateList[app.curIndex2].category_id
         }
         return app.curIndex > -1 ? app.list[app.curIndex].category_id : 0
-      },
-
-      // 设置列表内容的高度
-      setListHeight() {
-        const { windowHeight } = uni.getSystemInfoSync()
-        this.scrollHeight = windowHeight - rpx2px(88)
       },
 
       // 一级分类：选中分类
@@ -248,7 +236,7 @@
     left: var(--window-left);
     bottom: var(--window-bottom);
     width: 173rpx;
-    height: 100%;
+    height: calc(100% - var(--window-bottom) - 88rpx); 
     background: #f8f8f8;
     color: #444;
   }
