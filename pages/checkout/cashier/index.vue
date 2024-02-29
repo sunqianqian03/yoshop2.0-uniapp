@@ -76,6 +76,19 @@
     [PayMethodEnum.ALIPAY.value]: '支付宝'
   }
 
+  // H5端支付下单时的数据
+  // 用于从第三方支付页返回到收银台页面后拿到下单数据
+  const getTempUnifyData = orderKey => {
+    // if (window.performance && window.performance.navigation.type == 2) {
+    const tempUnifyData = storage.get('tempUnifyData_' + orderKey)
+    if (tempUnifyData) {
+      storage.remove('tempUnifyData_' + orderKey)
+      return tempUnifyData
+    }
+    // }
+    return null
+  }
+
   export default {
     components: {
       CountDown
@@ -103,7 +116,7 @@
         // 支付确认弹窗
         showConfirmModal: false,
         // #ifdef H5
-        // 当前微信支付信息 (临时数据, 仅用于H5端)
+        // 当前第三方支付信息 (临时数据, 仅用于H5端)
         tempUnifyData: { outTradeNo: '', method: '' },
         // #endif
       }
@@ -115,6 +128,12 @@
     onLoad({ orderId }) {
       // 记录订单ID
       this.orderId = Number(orderId)
+    },
+
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow() {
       // 获取收银台信息
       this.getCashierInfo()
     },
@@ -144,6 +163,7 @@
       setDefaultPayType() {
         const app = this
         if (app.disabled) return
+        if (app.curPaymentItem) return
         const defaultIndex = app.methods.findIndex(item => item.is_default == true)
         defaultIndex > -1 && app.handleSelectPayType(defaultIndex)
       },
@@ -162,32 +182,17 @@
         this.curPaymentItem = this.methods[index]
       },
 
-      // 判断当前页面来源于浏览器返回
+      // 判断当前页面来源于浏览器返回并提示手动查单
       // #ifdef H5
       performance() {
         const app = this
         // 判断订单状态, 异步回调会将订单状态变为已支付, 那么就不需要让用户手动查单了
         if (app.order.pay_status == PayStatusEnum.PENDING.value) {
-          app.alipayPerformance()
-          app.wechatPerformance()
-        }
-      },
-
-      // H5端支付宝支付完成跳转回当前页面时触发
-      alipayPerformance() {
-        const app = this
-        app.tempUnifyData = Alipay.performance()
-        if (app.tempUnifyData) {
-          app.onTradeQuery(app.tempUnifyData.outTradeNo, app.tempUnifyData.method)
-        }
-      },
-
-      // H5端微信支付完成或返回时触发
-      wechatPerformance() {
-        const app = this
-        app.tempUnifyData = Wechat.performance(app.orderId)
-        if (app.tempUnifyData) {
-          app.showConfirmModal = true
+          const performanceData = getTempUnifyData(app.orderId)
+          if (performanceData) {
+            app.tempUnifyData = performanceData
+            app.showConfirmModal = true
+          }
         }
       },
       // #endif
@@ -236,7 +241,7 @@
         // 发起支付宝支付
         if (method === PayMethodEnum.ALIPAY.value) {
           console.log('paymentData', paymentData)
-          Alipay.payment(paymentData)
+          Alipay.payment({ orderKey: app.orderId, ...paymentData })
             .then(res => app.onPaySuccess(res))
             .catch(err => app.onPayFail(err))
         }

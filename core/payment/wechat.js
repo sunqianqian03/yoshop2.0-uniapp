@@ -102,18 +102,3 @@ export const payment = (option) => {
 export const extraAsUnify = () => {
   return {}
 }
-
-// H5端微信支付下单时的数据
-// 用于从微信支付页返回到收银台页面后拿到下单数据
-// #ifdef H5
-export const performance = (orderKey) => {
-  if (window.performance && window.performance.navigation.type == 2) {
-    const tempUnifyData = storage.get('tempUnifyData_' + orderKey)
-    if (tempUnifyData) {
-      storage.remove('tempUnifyData_' + orderKey)
-      return tempUnifyData
-    }
-  }
-  return null
-}
-// #endif

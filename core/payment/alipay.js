@@ -1,4 +1,5 @@
 import platform from '@/core/platform'
+import storage from '@/utils/storage'
 import ClientEnum from '@/common/enum/Client'
 import { PayMethodEnum } from '@/common/enum/payment'
 
@@ -8,6 +9,11 @@ import { PayMethodEnum } from '@/common/enum/payment'
  */
 const paymentAsH5 = option => {
   const options = { formHtml: '', ...option }
+  // 记录下单的信息
+  storage.set('tempUnifyData_' + options.orderKey, {
+    method: PayMethodEnum.ALIPAY.value,
+    outTradeNo: options.out_trade_no
+  }, 60 * 60)
   // 跳转到支付宝支付页
   return new Promise((resolve, reject) => {
     // console.log(options.formHtml)
@@ -72,20 +78,3 @@ export const extraAsUnify = () => {
   // #endif
   return extra
 }
-
-// H5端支付宝支付下单时的数据
-// 用于从支付宝支付页返回到收银台页面后拿到下单数据
-// #ifdef H5
-export const performance = () => {
-  const query = getCurrentQuery()
-  if (query.method && query.method === 'alipay.trade.wap.pay.return') {
-    return { method: PayMethodEnum.ALIPAY.value, outTradeNo: query.out_trade_no }
-  }
-  return null
-}
-
-const getCurrentQuery = () => {
-  const pages = getCurrentPages()
-  return pages[pages.length - 1].$route.query
-}
-// #endif

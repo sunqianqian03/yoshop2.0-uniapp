@@ -14,8 +14,7 @@
       </view>
       <view class="recharge-plan clearfix">
         <block v-for="(item, index) in planList" :key="index">
-          <view class="recharge-plan_item" :class="{ active: selectedPlanId == item.plan_id }"
-            @click="onSelectPlan(item.plan_id)">
+          <view class="recharge-plan_item" :class="{ active: selectedPlanId == item.plan_id }" @click="onSelectPlan(item.plan_id)">
             <view class="plan_money">
               <text>{{ item.money }}</text>
             </view>
@@ -35,8 +34,7 @@
         <text>支付方式</text>
       </view>
       <view class="payment-method">
-        <view v-for="(item, index) in methods" :key="index" class="pay-item dis-flex flex-x-between"
-          @click="handleSelectPayType(index)">
+        <view v-for="(item, index) in methods" :key="index" class="pay-item dis-flex flex-x-between" @click="handleSelectPayType(index)">
           <view class="item-left dis-flex flex-y-center">
             <view class="item-left_icon" :class="[item.method]">
               <text class="iconfont" :class="[PayMethodIconEnum[item.method]]"></text>
@@ -83,6 +81,7 @@
 </template>
 
 <script>
+  import storage from '@/utils/storage'
   import * as RechargeApi from '@/api/recharge'
   import { PayMethodEnum } from '@/common/enum/payment'
   import { inArray, urlEncode } from '@/utils/util'
@@ -98,6 +97,19 @@
   const PayMethodClientNameEnum = {
     [PayMethodEnum.WECHAT.value]: '微信',
     [PayMethodEnum.ALIPAY.value]: '支付宝'
+  }
+
+  // H5端支付下单时的数据
+  // 用于从第三方支付页返回到收银台页面后拿到下单数据
+  const getTempUnifyData = orderKey => {
+    // if (window.performance && window.performance.navigation.type == 2) {
+    const tempUnifyData = storage.get('tempUnifyData_' + orderKey)
+    if (tempUnifyData) {
+      storage.remove('tempUnifyData_' + orderKey)
+      return tempUnifyData
+    }
+    // }
+    return null
   }
 
   export default {
@@ -128,16 +140,16 @@
         // 支付确认弹窗
         showConfirmModal: false,
         // #ifdef H5
-        // 当前微信支付信息 (临时数据, 仅用于H5端)
+        // 当前第三方支付信息 (临时数据, 仅用于H5端)
         tempUnifyData: { outTradeNo: '', method: '' },
         // #endif
       }
     },
 
     /**
-     * 生命周期函数--监听页面加载
+     * 生命周期函数--监听页面显示
      */
-    onLoad(options) {
+    onShow(options) {
       // 获取页面数据
       this.getPageData()
     },
@@ -174,7 +186,7 @@
               app.methods = result.data.paymentMethods
               app.isLoading = false
               // 默认选中的支付方式
-              app.handleSelectPayType(0)
+              app.setDefaultPayType()
               // #ifdef H5
               // 判断当前页面来源于浏览器返回
               this.performance()
@@ -183,28 +195,20 @@
         })
       },
 
-      // 判断当前页面来源于浏览器返回
-      // #ifdef H5
-      performance() {
-        this.alipayPerformance()
-        this.wechatPerformance()
-      },
-
-      // H5端支付宝支付完成跳转回当前页面时触发
-      alipayPerformance() {
-        const app = this
-        app.tempUnifyData = Alipay.performance()
-        if (app.tempUnifyData) {
-          app.onTradeQuery(app.tempUnifyData.outTradeNo, app.tempUnifyData.method)
+      // 默认选中的支付方式
+      setDefaultPayType() {
+        if (!this.curPaymentItem) {
+          this.handleSelectPayType(0)
         }
       },
 
-      // H5端微信支付完成或返回时触发
-      wechatPerformance() {
+      // 判断当前页面来源于浏览器返回并提示手动查单
+      // #ifdef H5
+      performance() {
         const app = this
-        app.tempUnifyData = Wechat.performance('recharge')
-        console.log('wechatPerformance', app.tempUnifyData)
-        if (app.tempUnifyData) {
+        const performanceData = getTempUnifyData('recharge')
+        if (performanceData) {
+          app.tempUnifyData = performanceData
           app.showConfirmModal = true
         }
       },
@@ -258,7 +262,7 @@
         // 发起支付宝支付
         if (method === PayMethodEnum.ALIPAY.value) {
           console.log('paymentData', paymentData)
-          Alipay.payment(paymentData)
+          Alipay.payment({ orderKey: 'recharge', ...paymentData })
             .then(res => app.onPaySuccess(res))
             .catch(err => app.onPayFail(err))
         }
