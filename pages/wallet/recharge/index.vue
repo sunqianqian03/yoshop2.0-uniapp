@@ -19,7 +19,7 @@
             <view class="plan_money">
               <text>{{ item.money }}</text>
             </view>
-            <view class="plan_gift" v-if="item.gift_money > 0">
+            <view class="plan_gift">
               <text>送{{ item.gift_money }}</text>
             </view>
           </view>
