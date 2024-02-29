@@ -13,9 +13,10 @@
         <view class="line"></view>
         <view class="item-option">
           <view class="_left">
-            <view class="item-radio" @click="handleSetDefault(item.address_id)">
-              <radio class="radio" :color="appTheme.mainBg" :checked="item.address_id == defaultId"></radio>
-              <text class="text">{{ item.address_id == defaultId ? '默认' : '选择' }}</text>
+            <view class="item-radio">
+              <u-radio-group v-model="defaultId" @change="handleSetDefault(item.address_id)">
+                <u-radio :name="item.address_id" :active-color="appTheme.mainBg">{{ item.address_id == defaultId ? '默认' : '选择' }}</u-radio>
+              </u-radio-group>
             </view>
           </view>
           <view class="_right">
@@ -178,7 +179,7 @@
         const app = this
         AddressApi.setDefault(addressId)
           .then(result => {
-            app.defaultId = addressId
+            // app.defaultId = addressId
             app.options.from === 'checkout' && uni.navigateBack()
           })
       }
