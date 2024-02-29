@@ -91,7 +91,7 @@
             </view>
           </view>
           <!-- 客服 -->
-          <customer-btn v-if="isShowCustomerBtn">
+          <customer-btn v-if="isShowCustomerBtn" :showCard="true" :cardTitle="goods.goods_name" :cardImage="goods.goods_image">
             <view class="fast-item">
               <view class="fast-icon">
                 <text class="iconfont icon-kefu1"></text>

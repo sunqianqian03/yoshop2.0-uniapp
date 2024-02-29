@@ -1,8 +1,12 @@
 <template>
   <view v-if="isShow">
-    <button class="btn-normal" :open-type="setting.provider == 'mpwxkf' ? 'contact' : ''">
+    <!-- 微信小程序端、H5端、APP端 -->
+    <!-- #ifdef MP-WEIXIN || H5 || APP-PLUS -->
+    <button class="btn-normal" :open-type="setting.provider == 'mpwxkf' ? 'contact' : ''" :show-message-card="showCard"
+      :send-message-path="cardPath" :send-message-title="cardTitle" :send-message-img="cardImage" @click="handleContact()">
       <slot></slot>
     </button>
+    <!-- #endif -->
   </view>
 </template>
 
@@ -11,7 +15,28 @@
   import SettingModel from '@/common/model/Setting'
 
   export default {
-    props: {},
+    props: {
+      // 是否显示消息卡片
+      showCard: {
+        Type: Boolean,
+        default: false
+      },
+      // 消息卡片标题
+      cardTitle: {
+        Type: String,
+        default: ''
+      },
+      // 消息卡片图片
+      cardImage: {
+        Type: String,
+        default: ''
+      },
+      // 消息卡片点击跳转的路径
+      cardPath: {
+        Type: String,
+        default: ''
+      },
+    },
     data() {
       return {
         isShow: false,
