@@ -11,7 +11,13 @@
       </block>
       <!-- 轮播图 -->
       <block v-if="item.type === 'banner'">
-        <Banner :itemStyle="item.style" :params="item.params" :dataList="item.data" />
+
+
+
+
+        <Banner 
+        :itemStyle="item.style"
+         :params="item.params" :dataList="item.data" />
       </block>
       <!-- 图片橱窗 -->
       <block v-if="item.type === 'window'">
